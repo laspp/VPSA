@@ -1,4 +1,4 @@
-# PORAZDELJENI SISTEMI
+# VZPOREDNI IN PORAZDELJENI SISTEMI in ALGORITMI
 
 ## [Osnovni podatki o predmetu](podatki.md)
 
