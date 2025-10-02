@@ -20,7 +20,7 @@
 
 - von Neumannova arhitektura: CPE, pomnilnik, V/I naprave
 - dolgo časa (do 2004) je zmogljivost računalniških sistemov naraščala z miniaturizacijo (releji, elektronke, vedno manjši in več tranzistorjev, zviševanje frekvence ure) in izboljševanjem strojne opreme
-- veljalo je Dennardovo pravilo: zmanjšanje velikosti tranzistorja na pol, poveča njihovo število za štirikrat, vsak tranzistor dela dvakrat hitreje (krajše povezave) ob nespremenjeni količini odvedene toplote
+- veljalo je Dennardovo pravilo: izboljšanje tehnologije izdelovanja tranzistorjev poveča njihovo število in hitrost, količina odvedene toplote pa se ne spremeni - zmanjšanje tehnologije izdelovanja za faktor dva poveča število tranzistorjev za štirikrat, vsak tranzistor dela dvakrat hitreje (krajše povezave) ob nespremenjeni količini odvedene toplote (napetost in tok se ustrezno zmanjšata, zato tudi poraba energije na tranzistor)
 - karakteristike procesorjev skozi čas ([graf](https://www.karlrupp.net/2018/02/42-years-of-microprocessor-trend-data/))
 - Moorov zakon: zmogljivost sistemov se vsakih 18 mesecev podvoji ([graf](https://en.wikipedia.org/wiki/Transistor_count#/media/File:Moore's_Law_Transistor_Count_1970-2020.png))
 - težava z odvajanjem energije pri več kot 130 W porabe na procesor
@@ -86,4 +86,4 @@
 - vsi imamo enako strojno opremo (množica vozlišč z modernimi večjedrnimi procesorji in grafičnimi pospeševalniki)
 - programsko opremo namestijo administratorji
 - delate lahko doma ali na fakulteti
-- celo šolsko leto imate dostop, lahko uporabljate tudi pri drugih predmetih, za najprej pišete na <support@sling.si> za podaljšanje
+- celo šolsko leto imate dostop, lahko uporabljate tudi pri drugih predmetih, za naprej pišete na <support@sling.si> za podaljšanje
