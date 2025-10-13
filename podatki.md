@@ -46,4 +46,5 @@
   - oddaja do konca semestra, zagovor do prvega izpitnega roka
   - uspešno zagovorjena projektna naloga je pogoj za pristop k izpitu
 - 50 % izpit
+  - pogoj za pristop k izpitu je oddanih 6 od 8 kratkih domačih nalog, ki jih dobite na vajah 
   - izpit opravite, če zberete vsaj 50 % točk
