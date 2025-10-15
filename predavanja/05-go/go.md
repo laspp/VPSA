@@ -4,7 +4,7 @@
 
 - najprej jezik C, s katerim so lahko dobro izkoristili malo virov, ki so bili na voljo; čista sintaksa, enostavnost programiranja nista prioriteti
 - kasneje C++, C#, java podpirajo večnitno programiranje, čiščenje pomnilnika, z novimi in novimi funkcionalnosti vedno bolj zmogljivi
-- jezika python/javascript: ogromna skupnost, veliko paketov, ni prevajan, fokus ni na zmogljivosti
+- jezika python/javascript: ogromna skupnost, veliko paketov, nista prevajana, fokus ni na zmogljivosti
 - niša: zmogljiv, prevajan, večplatformni jezik z vgrajeno podporo za vzporedenje (sistemsko programiranje)
 - statično tipiziran jezik, ni objekten, podpora za pisanje vmesnikov
 
@@ -30,7 +30,7 @@
 
 - model opravilo kanal (Foster, 1995), model CSP, *angl.* Communicating Sequential Processes (Hoare, 1978)
 
-  - 1978: ali uporabljati stavek goto, osnutki objektnega programiranja, nihče ne razmišlja o sočasnosti
+  - leto 1978: ali uporabljati stavek goto, osnutki objektnega programiranja, nihče ne razmišlja o sočasnosti
   - CSP predstavljen kot programski jezik
   - model
     - sestavni deli: vhod, izhod, sekvenčna funkcija (proces, naloga)
@@ -70,7 +70,7 @@
   $ module load Go
   $ srun --reservation=fri --tasks=1 --cpus-per-task=2 go run pozdrav-1.go
       
-  $ go build pozdrav-1.go
+  $ srun --reservation=fri --tasks=1 --cpus-per-task=1 go build pozdrav-1.go
   $ srun --reservation=fri --tasks=1 --cpus-per-task=2 ./pozdrav-1
   ```
 
@@ -88,7 +88,7 @@
   - če v glavni gorutini počakamo pred zaključkom programa, dobimo izpis
   - še vedno ni bilo pridruževanja dodatne gorutine
 
-- uporabimo vzorce razcepi-pridruži
+- uporabimo vzorec razcepi-pridruži
 
   [pozdrav-4.go](koda/pozdrav-4.go)
   - uporabimo sinhronizacijo, paket `sync`
