@@ -68,10 +68,10 @@
 
   ```go
   $ module load Go
-  $ srun --reservation=fri --tasks=1 --cpus-per-task=2 go run pozdrav-1.go
+  $ srun --reservation=fri --ntasks=1 --cpus-per-task=2 go run pozdrav-1.go
       
-  $ srun --reservation=fri --tasks=1 --cpus-per-task=1 go build pozdrav-1.go
-  $ srun --reservation=fri --tasks=1 --cpus-per-task=2 ./pozdrav-1
+  $ srun --reservation=fri --ntasks=1 go build pozdrav-1.go
+  $ srun --reservation=fri --ntasks=1 --cpus-per-task=2 ./pozdrav-1
   ```
 
 - ustvarimo gorutino
