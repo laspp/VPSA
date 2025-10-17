@@ -1,6 +1,6 @@
 # Uporaba računske gruče Arnes
 
-Pri predmetu Porazdeljeni sistemi bomo za delo uporabljali računsko gručo [Arnes](https://www.sling.si/arnesova-racunska-gruca/). Trenutno je to drugi najzmogljivejši superračunalnik v Sloveniji ([prvi je Vega](https://si-vegadocs.vega.izum.si/specifikacije/)).
+Pri predmetu Vzporedni sistemi ina algoritmi bomo za delo lahko uporabljali računsko gručo [Arnes](https://www.sling.si/arnesova-racunska-gruca/). Trenutno je to drugi najzmogljivejši superračunalnik v Sloveniji ([prvi je Vega](https://si-vegadocs.vega.izum.si/specifikacije/)).
 | ![space-1.jpg](slike/arnes.jpg) | 
 |:--:| 
 | *Računska gruča Arnes*|
