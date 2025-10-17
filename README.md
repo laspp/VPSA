@@ -24,5 +24,6 @@
   - predavanja: [jezik go](predavanja/05-go/go.md)
   - vaje: [SLURM](vaje/01-uporaba-gruce/Uporaba_gruce.md)
 
-
+- Teden 04:
+  - vaje: [jezik go](vaje/02-programski-jezik-go/Uvod_v_go.md)
   
