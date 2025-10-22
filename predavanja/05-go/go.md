@@ -35,7 +35,7 @@
   - model
     - sestavni deli: vhod, izhod, sekvenčna funkcija (proces, naloga)
     - ukaz za pošiljanje vsebine na vhod, izvajanje naloge, ukaz za branje izhoda
-    - programski jezik zagotavljanje pravilno komunikacijo med nalogami
+    - programski jezik zagotavlja pravilno komunikacijo med nalogami
   - Hoare pokaže, da je mnogo problemov zelo enostavno reševati na ta način
   - z leti se je pokazalo, da je ta model zelo blizu našemu načinu razmišljanja
 - logiko modela opravilo kanal privzame jezik go
@@ -92,7 +92,7 @@
 
   [pozdrav-4.go](koda/pozdrav-4.go)
   - uporabimo sinhronizacijo, paket `sync`
-  - definiramo skupino gorutin, ki jih želimo na neki točki pridružiti (`WaitGroup`) 
+  - definiramo skupino gorutin, ki jih želimo na neki točki pridružiti (`WaitGroup`)
   - povemo koliko gorutin bomo ustvarili (`wg.Add()`)
   - vsaka gorutina sporoči skupini, da je zaključila (`wg.Done()`)
   - določimo točko pridruževanja (`wg.Wait()`)
@@ -102,13 +102,13 @@
 
   [pozdrav-5a.go](koda/pozdrav-5a.go)
   - jezik go ne jamči vrstnega reda izvajanja gorutin
-  - izvajanje gorutine se lahko začasno tudi prekine
+  - izvajanje gorutine se lahko začasno ustavi
   - gorutino lahko kličemo z argumenti
   - glavna gorutina čaka, da se dodatne gorutine zaključijo
 
   [pozdrav-5b.go](koda/pozdrav-5b.go)
   - jezik go ne jamči vrstnega reda izvajanja gorutin
-  - izvajanje gorutine se lahko začasno tudi prekine
+  - izvajanje gorutine se lahko začasno ustavi
   - gorutino lahko kličemo z argumenti
   - glavna gorutina tudi opravi delo
 
@@ -116,29 +116,29 @@
 
 - sinhronizacijski konstrukt, ki ga je predvidel model CSP
 - njihova primarna naloga je zagotavljanje komunikacije med gorutinami
-- lahko pa jih učinkovito uporabimo tudi za sinhronizacijo
+- lahko jih uporabimo tudi za sinhronizacijo
 - katerakoli gorutina lahko pošlje vrednosti v kanal, katerakoli gorutina jih lahko potem iz kanala prebere
 - različne gorutine za komunikacijo potrebujejo le referenco na skupni kanal
 - ustvarjanje kanalov
-  - dvosmerni kanal za celoštevilčne vrednosti
+  - dvosmerni kanal za nize
 
     ```go
-    var dataStream chan int
-    dataStream = make(chan int)
+    var dataStream chan string
+    dataStream = make(chan string)
     ```
 
   - enosmerni kanal za branje
 
     ```go
-    var dataStreamRead <-chan int
-    dataStreamRead = make(<-chan int)
+    var dataStreamRead <-chan string
+    dataStreamRead = make(<-chan string)
     ```
 
   - enosmerni kanal za pisanje
 
     ```go
-    var dataStreamWrite chan<- int
-    dataStreamWrite = make(chan<- int)
+    var dataStreamWrite chan<- string
+    dataStreamWrite = make(chan<- string)
     ```
 
 - običajno ustvarimo dvosmerni kanal, enosmerne kanale pa uporabljamo kot argumente funkcij ali jih funkcija vrača, saj jezik go po potrebi dvosmerni kanal prevede v ustrezen enosmerni kanal
@@ -151,8 +151,8 @@
 - operator `<-` uporabljamo za pisanje vrednosti v kanal in za branje vrednosti iz kanala
 
     ```go
-    dataStream <- 314       // pisanje
-    value = <- dataStream   // branje
+    dataStream <- "314"       // pisanje
+    value = <- dataStream     // branje
     ```
 
 - kanali so blokirajoči
@@ -162,11 +162,11 @@
   - nepravilna uporaba kanalov lahko pripelje do smrtnega objema ([smrtni-objem.go](koda/smrtni-objem.go))
 
     ```go
-    var dataStream = make(chan int)
+    var dataStream = make(chan string)
 
     func writer() {
         return
-        dataStream <- 13                // gorutina nikoli ne zapiše vrednosti v kanal
+        dataStream <- "13"                // gorutina nikoli ne zapiše vrednosti v kanal
     }
 
     func main() {
@@ -178,22 +178,27 @@
 
 - kanal ima definirano kapaciteto; privzeta kapaciteta kanala je 0
 
-  - definiciji `dataStream = make(chan int)` in `dataStream = make(chan int, 0)` sta enakovredni
+  - definiciji `dataStream = make(chan string)` in `dataStream = make(chan string, 0)` sta enakovredni
   - kanal s kapaciteto 0 je poln, še preden lahko vanj pišemo
   - če je ob pošiljanju vrednosti v kanal že pripravljena tudi gorutina, ki iz kanala bere, nam vrednosti ni treba nikamor shraniti
 
       <img src="slike/kanal-brez-medpomnilnika.png" width="60%">
 
-    [pozdrav-6.go](koda/pozdrav-6.go)
+    [pozdrav-6a.go](koda/pozdrav-6a.go)
 
   - glavna gorutina ustvari kanal
   - dodatne gorutine v kanal pišejo
   - zadnja dodatna gorutina se konča pred zadnjim branjem glavne gorutine
 
+    [pozdrav-6b.go](koda/pozdrav-6b.go)
+  
+  - glavna gorutina ne bere iz kanala
+  - dodatni gorutini čakata (izvajanje je blokirano)
+
 - kanali z medpomnilnikom definirane velikosti
 
     ```go
-    var bufferStream = make(chan int, 4)
+    var bufferStream = make(chan string, 4)
     ```
 
   - v kanal `bufferStream` lahko zapišemo štiri vrednosti preden katerokoli vrednost preberemo
@@ -214,15 +219,16 @@
   - branje iz odprtega in zaprtega kanala
 
     ```go
-    dataStream <- 314
-    value, ok := <-dataStream       // 314, true
+    dataStream <- "test"
+    value, ok := <-dataStream       // "test", true
     close(dataStream)
-    value, ok := <-dataStream       // 0, false
+    value, ok := <-dataStream       // "", false
     ```
 
   - s tem, ko zapremo kanal, povemo bralnim gorutinam, da v kanal nihče več ne bo vpisoval
   - branje iz zaprtega kanala je vedno mogoče
-  - potem, ko zapremo kanal, gorutine, ki čakajo na vrednost, preberejo privzeto vrednost (0 pri int) in nadaljujejo
+  - iz zaprtega kanala lahko preberemo vse vrednosti, ki so še v medpomnilniku
+  - ko v zaprtem kanalu ni več vrednosti, gorutine preberejo privzeto vrednost ("" za string, 0 za int) in nadaljujejo
 
     - v bistvu na ta način lahko pošljemo signal vsem gorutinam, da nadaljujejo
     - bolj učinkovito, kot za vsako čakajočo gorutino vpisati vrednost v kanal
@@ -260,12 +266,12 @@
   - dve funkciji: prva sporočilo pošilja po znakih v kanal; druga znake bere, male črke pretvarja v velike in sestavlja sporočilo
   - v funkciji `main` ne uporabimo ključne besede `go`
   - v funkciji `getLettersFromMessage` najprej ustvarimo kanal, nato pa s ključno besedo `go` pokličemo anonimno funkcijo (gorutino), ki piše v kanal in ga na koncu zapre
-  - funkcija `getMessageFromLetters` bere znake dokler je kanal odprt; kanal je odprt samo za branje, da preprečimo morebitne nevšečnosti ob pisanju v zaprti kanal
+  - funkcija `getUppercaseMessageFromLetters` bere znake dokler je kanal odprt; kanal je odprt samo za branje, da preprečimo morebitne nevšečnosti ob pisanju v zaprti kanal
 
 ### Sinhronizacija s kanali
 
 - kanal uporabimo kot sinhronizacijski element, po njem nič ne prenašamo
-- da gre za sinhronizacijski element dodatno poudarimo s kanalom za podatkovni tip `struct{}` (prazna struktura)
+- da gre za sinhronizacijski element, dodatno poudarimo s kanalom za podatkovni tip `struct{}` (prazna struktura)
 
 - primer: [razglas.go](koda/razglas.go)
 
@@ -275,7 +281,7 @@
 
 ### Delo z več kanali
 
-- stavek `select` je posebnost jezika go, pomemben element pri obvladovanju sočastnosti
+- stavek `select` je posebnost jezika go, pomemben element pri obvladovanju sočasnosti
 - podobno, kot s kanali povezujemo gorutine, s stavkom `select` povezujemo kanale
 - sintaksa stavka `select` je zelo podobna sintaksi stavka `switch`
   - stavka `select` in `switch` vključujeta množico vej, podanih s stavkom `case`
