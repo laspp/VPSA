@@ -33,7 +33,7 @@ func politeWorker(runtime time.Duration) {
 		count++
 	}
 
-	fmt.Println("Prijazna gorutina:", count, "iteracij.")
+	fmt.Println("Polite goroutine:", count, "iterations.")
 }
 
 func greedyWorker(runtime time.Duration) {
@@ -48,7 +48,7 @@ func greedyWorker(runtime time.Duration) {
 		count++
 	}
 
-	fmt.Println("Pohlepna gorutina:", count, "iteracij.")
+	fmt.Println("Greedy goroutine:", count, "iterations.")
 }
 
 func main() {
