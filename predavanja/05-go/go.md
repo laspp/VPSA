@@ -186,14 +186,14 @@
 
     [pozdrav-6a.go](koda/pozdrav-6a.go)
 
-  - glavna gorutina ustvari kanal
-  - dodatne gorutine v kanal pišejo
-  - zadnja dodatna gorutina se konča pred zadnjim branjem glavne gorutine
+    - glavna gorutina ustvari kanal
+    - dodatne gorutine v kanal pišejo
+    - zadnja dodatna gorutina se konča pred zadnjim branjem glavne gorutine
 
     [pozdrav-6b.go](koda/pozdrav-6b.go)
   
-  - glavna gorutina ne bere iz kanala
-  - dodatni gorutini čakata (izvajanje je blokirano)
+    - glavna gorutina ne bere iz kanala
+    - dodatni gorutini čakata (izvajanje je blokirano)
 
 - kanali z medpomnilnikom definirane velikosti
 
