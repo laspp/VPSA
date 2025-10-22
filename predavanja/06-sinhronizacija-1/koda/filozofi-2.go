@@ -55,5 +55,5 @@ func main() {
 	// gorutine pridružimo
 	wg.Wait()
 	timeElapsed := time.Since(timeStart)
-	fmt.Println("Čas:", timeElapsed)
+	fmt.Println("Time:", timeElapsed)
 }
