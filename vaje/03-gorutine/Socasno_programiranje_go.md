@@ -238,7 +238,7 @@ V pomoč vam bodo naslednje funkcije:
 fmt.Scanln()
 time.After()
 time.Sleep()
-rand.Float64()
+rand.Float32()
 ```
 
 **Rok za oddajo: 2. 11. 2025**
