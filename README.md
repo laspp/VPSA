@@ -31,4 +31,4 @@
   - vaje: [jezik go](vaje/02-programski-jezik-go/Uvod_v_go.md)
 
 - Teden 05:
-  - vaje:[sočasno programiranje v go](vaje/03-gorutine/Socasno_programiranje_go.md)] 
+  - vaje: [sočasno programiranje v go](vaje/03-gorutine/Socasno_programiranje_go.md) 
