@@ -218,11 +218,11 @@ func main() {
 
 # Domača naloga 2
 
-Napišite program v jeziku Go, ki bo omogočal spremljanje in izpis meritev senzorjev temperature, vlage in tlaka s pomočjo gorutin. Rešitev oddajte preko [spletne učilnice]().
+Napišite program v jeziku Go, ki bo omogočal spremljanje in izpis meritev senzorjev temperature, vlage in tlaka s pomočjo gorutin. Rešitev oddajte preko [spletne učilnice](https://ucilnica.fri.uni-lj.si/mod/assign/view.php?id=60244).
 
 **Navodila:**
 
-Definirajte strukturo Meritev:
+Definirajte strukturo `Meritev`:
 ```Go
 type Meritev struct {
 	vrsta string
