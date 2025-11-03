@@ -189,7 +189,7 @@ func main() {
 
 # Domača naloga 3
 
-Napišite program v jeziku Go, ki bo omogočal procesiranje naročil ki jih kupci oddajo preko spletne trgovine. Rešitev oddajte preko [spletne učilnice]().
+Napišite program v jeziku Go, ki bo omogočal procesiranje naročil ki jih kupci oddajo preko spletne trgovine. Rešitev oddajte preko [spletne učilnice](https://ucilnica.fri.uni-lj.si/mod/assign/view.php?id=60317).
 
 **Navodila:**
 
