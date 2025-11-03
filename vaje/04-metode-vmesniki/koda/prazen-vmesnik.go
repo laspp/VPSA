@@ -15,7 +15,7 @@ func display(x interface{}) {
 
 func main() {
 	// Uporaba funkcije display nad različnimi podatkovnimi tipi
-	s := "Porazdeljeni sistemi"
+	s := "VPSA"
 	display(s)
 	i := 42
 	display(i)
