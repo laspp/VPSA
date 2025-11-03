@@ -195,7 +195,7 @@ Napišite program v jeziku Go, ki bo omogočal procesiranje naročil ki jih kupc
 
 Definirajte vmesnik `narocilo`:
 ```Go
-type narocilo  {
+type narocilo interface {
 	obdelaj() float64
 }
 ```
