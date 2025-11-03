@@ -34,3 +34,8 @@
   - predavanja:
     [sinhronizacija: ključavnice (kritični odsek)](predavanja/06-sinhronizacija-1/sinhronizacija-1.md#kritični-odsek-z-eno-ključavnico)
   - vaje: [sočasno programiranje v go](vaje/03-gorutine/Socasno_programiranje_go.md)
+
+- Teden 06:
+  - predavanja:
+  - vaje: [metode in vmesniki](vaje/04-metode-vmesniki/Metode-vmesniki.md)
+
