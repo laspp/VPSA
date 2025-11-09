@@ -1,8 +1,8 @@
 // Pregrada
 // ključavnica, princip dvojih vrat:
-// 		faza (phase) = 0: prehajanje čez prva vrata
-//		faza 		 = 1: prehajanje čez druga vrata
-//		g				: število gorutin za prvimi in pred drugimi vrati
+// 		faza (phase) = 0: prehajanje čez vrata 0
+//		faza 		 = 1: prehajanje čez vrata 1
+//		g				: število gorutin med vrati
 // tveganega stanja ni več
 
 package main
@@ -18,7 +18,7 @@ import (
 var wg sync.WaitGroup
 var goroutines int
 var g int = 0
-var lock sync.RWMutex
+var rwlock sync.RWMutex
 var phase int = 0
 
 func barrier(id int, printouts int) {
@@ -33,40 +33,38 @@ func barrier(id int, printouts int) {
 
 		// pregrada - začetek
 		// vrata 0
-		lock.Lock()
-		if phase == 1 { // ko gorutine prvič prihajajo do pregrade, je phase == 0
-			if g > 0 {
-				lock.Unlock()
-				p = 1
-				for p == 1 {
-					lock.Lock()
-					p = phase
-					lock.Unlock()
-				}
-				lock.Lock()
-			} else {
-				phase = 0 // prehajanje čez vrata 0 se začne, ko zadnja gorutina zapusti vrata 1
+		rwlock.Lock()
+		if g > 0 {
+			rwlock.Unlock()
+			p = 1
+			for p == 1 {
+				rwlock.Rlock()
+				p = phase
+				rwlock.Runlock()
 			}
+			rwlock.Lock()
+		} else {
+			phase = 0 // prehajanje čez vrata 0 se začne, ko zadnja gorutina zapusti vrata 1
 		}
 		g++
-		lock.Unlock()
+		rwlock.Unlock()
 
 		// vrata 1
-		lock.Lock()
+		rwlock.Lock()
 		if g < goroutines {
-			lock.Unlock()
+			rwlock.Unlock()
 			p = 0
 			for p == 0 {
-				lock.Lock()
+				rwlock.Rlock()
 				p = phase
-				lock.Unlock()
+				rwlock.Runlock()
 			}
-			lock.Lock()
+			rwlock.Lock()
 		} else {
 			phase = 1 // prehajanje čez vrata 1 se začne, ko zadnja gorutina zapusti vrata 0
 		}
 		g--
-		lock.Unlock()
+		rwlock.Unlock()
 		// pregrada - konec
 	}
 }
