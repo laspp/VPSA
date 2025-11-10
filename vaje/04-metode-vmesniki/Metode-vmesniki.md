@@ -150,7 +150,7 @@ Rezino `shapes` smo napolnili z različnimi liki. Ker vsi liki implementirajo vm
 
 ### Prazen vmesnik
 
-Vmesnik, ki nima nobene metode, se imenuje prazen vmesnik. Predstavljen je z `interface{}`. Ker prazen vmesnik nima nobenih metod, vsi podatkovni tipi implementirajo prazen vmesnik. Ker se prazni vmesniki v go pogosto uporabljajo imamo zanje definirano sopomenko `any`
+Vmesnik, ki nima nobene metode, se imenuje prazen vmesnik. Predstavljen je z `interface{}`. Ker prazen vmesnik nima nobenih metod, vsi podatkovni tipi implementirajo prazen vmesnik. Ker se prazni vmesniki v go pogosto uporabljajo imamo zanje definirano sopomenko `any`.
 
 Primer:
 ```Go
