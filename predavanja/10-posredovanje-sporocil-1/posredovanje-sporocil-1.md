@@ -86,7 +86,7 @@ Porazdeljeni sistem je tisti, v katerem okvara računalnika, za katerega sploh n
 
 ## Zanesljiv prenos podatkov (TCP) [UDS:2-2.4]
 
-- prenos paketa podatkov od pošiljatelja do sprejemnika lahko poteka čez množico usmerjevalnikov 
+- prenos paketa podatkov od pošiljatelja do sprejemnika lahko poteka čez množico usmerjevalnikov
 - za pravilno dostavo paketa rabimo naslove vozlišč (IPv4 $2^{32}$ in IPv6 $2^{128}$) in usmerjevalne tabele
 - protokol TCP podatkovni tok razbije na množico paketov (*angl.* segmentov)
 - protokol TCP nadgrajuje protokol IP z zagotavljanjem zanesljivosti prenosa paketov: zagotavlja vrstni red paketov, ni manjkajočih in podvojenih paketov, v paketih ni napak, preprečuje preobremenitev omrežja
