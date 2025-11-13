@@ -29,7 +29,7 @@ Uporabimo strkture, ki smo jih imeli že pri prejšnji domači nalogi.
 Definirajte vmesnik `narocilo`:
 ```Go
 type narocilo interface {
-	obdelaj() float64
+	obdelaj()
 }
 ```
 
