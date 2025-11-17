@@ -4,12 +4,12 @@
 package main
 
 import (
+	"api/grpc/protobufStorage"
+	"api/storage"
 	"context"
 	"fmt"
 	"net"
 	"os"
-	"primer/grpc/protobufStorage"
-	"primer/storage"
 
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
