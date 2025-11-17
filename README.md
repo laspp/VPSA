@@ -51,3 +51,4 @@
 - Teden 07:
   - predavanja: posredovanje sporočil:
     [osnove](predavanja/10-posredovanje-sporocil-1/posredovanje-sporocil-1.md)
+  - vaje: [moduli in paketi](vaje/06-moduli-paketi/Moduli-paketi.md)
