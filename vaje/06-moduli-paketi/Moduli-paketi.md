@@ -86,11 +86,11 @@ ime_modula/        ← modul
         exe1.go    ← paket main
     exe2/
         exe2.go    ← paket main  
-    pkg/
-        paket1/        ← paket 1
-            p1.go
-        paket2/        ← paket 2
-            p2.go
+  pkg/
+    paket1/        ← paket 1
+        p1.go
+    paket2/        ← paket 2
+        p2.go
 ```
 Izvršljivo datoteko bi iz kode v datoteki `exe1.go` ustvarili z ukazom:
 ```
