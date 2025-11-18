@@ -52,3 +52,7 @@
   - predavanja: posredovanje sporočil:
     [osnove](predavanja/10-posredovanje-sporocil-1/posredovanje-sporocil-1.md)
   - vaje: [moduli in paketi](vaje/06-moduli-paketi/Moduli-paketi.md)
+
+- Teden 08:
+  - predavanja: posredovanje sporočil:
+    [programski vmesniki](predavanja/11-posredovanje-sporocil-2/posredovanje-sporocil-2.md)
