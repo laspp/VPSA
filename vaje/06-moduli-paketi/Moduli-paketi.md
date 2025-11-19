@@ -7,7 +7,7 @@ Upravljanje s knjižnicami in kodo se v Go vrti okoli treh konceptov:  repozitor
 Paket je osnovna organizacijska enota kode v Go. Sestavlja jo ena ali več datotek znotraj iste mape, ki skupaj rešujejo določen problem. Paket ustvarimo tako, da znotraj datoteke `.go` navedemo:
 
 ```go
-package imePaketa
+package imepaketa
 ```
 
 Imenu paketa sledi koda, ki pripada danemu paketu.
