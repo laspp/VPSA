@@ -4,6 +4,11 @@
 
 ## Kazalo
 
+
+### Projektna naloga
+
+[Navodila](projektna-naloga/navodila.md) za izdelavo projektne naloge. **Rok za oddajo 19. 1. 2026**
+
 ### Uvod
 
 - Teden 01:
@@ -56,6 +61,7 @@
 - Teden 08:
   - predavanja: posredovanje sporočil:
     [posredovanje sporočil: programski vmesniki](predavanja/11-posredovanje-sporocil-2/posredovanje-sporocil-2.md)
+  - vaje: [posredovanje sporočil](vaje/07-posredovanje-sporocil/Posredovanje-sporocil.md)
 
 - Teden 09:
   - predavanja:
