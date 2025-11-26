@@ -65,5 +65,5 @@
 
 - Teden 09:
   - predavanja:
-    [merjenje časa](predavanja/13-merjenje-casa/merjenje-casa.md)
+    [merjenje časa](predavanja/12-merjenje-casa/merjenje-casa.md)
   - vaje:

@@ -111,8 +111,9 @@
 - pri zaporednih procesih se vedno ena operacija izvede pred drugo, imamo vzročno povezava prej-potem (*angl.* happened-before)
 - dogodek $X$ se je zgodil pred dogodkom $Y$, če velja
   - $X$ in $Y$ tečeta na istem procesu in se je $X$ zgodil pred $Y$
-  - dogodek $X$ je pošiljanje sporočila, dogodek $Y$ pa sprejemanje istega sporočila
-  - obstaja dogodek $Z$, za katerega velja, da se je dogodek $X$ zgodil pred dogodkom $Z$ in dogodek $Z$ pred dogodkom $Y$
+  - dogodek $X$ je odpošiljanje sporočila, dogodek $Y$ pa sprejemanje istega sporočila
+  - obstaja dogodek $Z$ (prenos sporočila), za katerega velja, da se je dogodek $X$ zgodil pred dogodkom $Z$ in dogodek $Z$ pred dogodkom $Y$
+  - po zajtrku pošljemo elektronsko pošto prijatelju, prijatelj jo prebere pred kosilom; zajtrkovali smo preden je prijatelj kosil
 - potrebujemo algoritem, ki bo vzročno povezavo prej-potem zagotavljal v porazdeljenih sistemih
 - logične ure merijo čas v dogodkih
   - ob dogodku algoritem določi logični časovni žig
@@ -121,7 +122,6 @@
 ### Lamportova ura [UDS:8.2]
 
 - ideja:
-  - po zajtrku pošljemo elektronsko pošto prijatelju, prijatelj jo prebere pred kosilom; zajtrkovali smo preden je prijatelj kosil
   - pošiljanje sporočila je sinhronizacijska točka
   - dogodki pred sinhronizacijsko točko so se morali zgoditi pred dogodki za sinhronizacijsko točko
 - algoritem
