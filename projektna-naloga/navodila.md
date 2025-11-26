@@ -114,8 +114,9 @@ message PostMessageRequest {
 }
 
 message LikeMessageRequest {
-  int64 message_id = 1;
-  int64 user_id = 2; // user who posted the like
+  int64 topic_id = 1;
+  int64 message_id = 2;
+  int64 user_id = 3; // user who posted the like
 }
 
 message ListTopicsResponse {
