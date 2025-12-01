@@ -67,3 +67,9 @@
   - predavanja:
     [merjenje časa](predavanja/12-merjenje-casa/merjenje-casa.md)
   - vaje: [grpc](vaje/08-grpc/Grpc.md)
+
+- Teden 10:
+  - predavanja:
+    [modeli porazdeljenih sistemov](predavanja/13-modeli-porazdeljenih-sistemov/modeli-porazdeljenih-sistemov.md),
+    [replikacija podatkov in verižna replikacija](predavanja/14-replikacija-1/replikacija-1.md)
+  - vaje:
