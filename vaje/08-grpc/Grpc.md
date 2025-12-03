@@ -164,9 +164,9 @@ service CRUD {
 }
 ```
 Sporočilo `TodoEvent` vsebuje vnos `T`, ki se je v shrambi spremenil in tip izvedene akcije `Action` v obliki niza:
-    - `create`: Dodan nov vnos v shrambo.
-    - `update`: Posodobljen vnos v shrambi.
-    - `delete`: Izbrisan vnos.
+- `create`: Dodan nov vnos v shrambo.
+- `update`: Posodobljen vnos v shrambi.
+- `delete`: Izbrisan vnos.
 
 Odjemalec se s pomočjo metode `Subscribe` naroči na dogodke in jih prejme v obliki sporočila `TodoEvent` iz strežnika takoj, ko se zgodijo. Delovanje naročnine preverite tako, da znotraj odjemalca v ločeni gorutini zaženete več akcij, ki spreminjajo vsebino shrambe. Med posamezne klice dajte kratko pavzo, (1 sekunda). V drugi gorutini pa spremljate zaporedje dogodkov s pomočjo metode Subscribe in jih izpisujte.
 
