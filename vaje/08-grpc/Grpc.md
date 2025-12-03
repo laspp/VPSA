@@ -43,7 +43,7 @@ Ker nova metoda ne potrebuje argumentov, vendar jih gRPC zahteva, uporabimo vgra
 
 Sedaj uporabimo prevajalnik za pretvorbo opisne datoteke `.proto` v kodo, ki jo uvozimo v go. V ukazni vrstici se prestavimo v mapo `protobufStorage` in prevedemo posodobljeno opisno datoteko:
 ```Bash
-srun protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative protobufStorage.proto
+protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative protobufStorage.proto
 ```
 
 Prevajalnik ustvari dve novi datoteki `protobufStorage.pb.go` in `protobufStorage_grpc.pb.go`. Prva vsebuje vse potrebne metode in podatkovne tipe za kodiranje in dekodiranje sporočil. Druga pa definira vmesnik RPC strežnika in odjemalca.
