@@ -84,7 +84,7 @@ service  MessageBoard{
   rpc LikeMessage(LikeMessageRequest) returns (Message);
 
   // Request a node to which a subscription can be opened.
-  rpc GetSubcscriptionNode(SubscriptionNodeRequest) returns (SubscriptionNodeResponse);
+  rpc GetSubscriptionNode(SubscriptionNodeRequest) returns (SubscriptionNodeResponse);
 
   // Reads go to the tail node
 
