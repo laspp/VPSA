@@ -77,4 +77,4 @@
 - Teden 11:
   - predavanja:
     [replikacija z voditeljem](predavanja/15-replikacija-2/replikacija-2.md)
-  - vaje:
+  - vaje: Konzultacije

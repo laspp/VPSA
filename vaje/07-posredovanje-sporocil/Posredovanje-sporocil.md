@@ -117,7 +117,7 @@ func main() {
 
 ### Komunikacija preko protokola UDP
 
-Za razliko od komunikacije preko TCP, tukaj posamezni proces ne more vedeti, kdaj je naslednji proces v vrsti začel poslušati na vratih. V kolikor je sporočilo poslano preden je prejemnik pripravljen, se bo sporočilo izgubilo. Da zagotovimo pripravljenost vseh procesov uvedemo gorutino `heartBeat`, ki poskrbi, da glavni proces `id==0` počaka na prejem obvestil od vseh ostalih procesov, da so pripravljeni, preden pošlje sporočilo prvemu. 
+Za razliko od komunikacije preko TCP, tukaj posamezni proces ne more vedeti, kdaj je naslednji proces v vrsti začel poslušati na vratih. Če je sporočilo poslano, preden je prejemnik pripravljen, se bo sporočilo izgubilo. Da zagotovimo pripravljenost vseh procesov uvedemo gorutino `heartBeat`, ki poskrbi, da glavni proces `id==0` počaka na prejem obvestil od vseh ostalih procesov, da so pripravljeni, preden pošlje sporočilo prvemu. 
 
 ```Go
 package main
