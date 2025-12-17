@@ -88,6 +88,9 @@ service  MessageBoard{
 
   // Reads go to the tail node
 
+  // NOTE: Add method GetUsers or attach name to the message in order to obtain user names.
+  // Currently, there is no way for the client to display user names, only user IDs
+
   // Returns all the topics
   rpc ListTopics(google.protobuf.Empty) returns (ListTopicsResponse);
 
