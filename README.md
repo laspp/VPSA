@@ -83,5 +83,5 @@
   - predavanja:
     [soglasje, skladnost in replikacija brez sporov](predavanja/16-replikacija-3/replikacija-3.md),
     [razširjanje sporočil](predavanja/17-razsirjanje-sporocil/razsirjanje-sporocil.md)
-  - vaje:
+  - vaje: konzultacije / obisk gruče Arnes
   
