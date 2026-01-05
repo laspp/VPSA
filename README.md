@@ -84,4 +84,8 @@
     [soglasje, skladnost in replikacija brez sporov](predavanja/16-replikacija-3/replikacija-3.md),
     [razširjanje sporočil](predavanja/17-razsirjanje-sporocil/razsirjanje-sporocil.md)
   - vaje: konzultacije / obisk gruče Arnes
+
+- Teden 13:
+  - predavanja:
+  - vaje: konzultacije
   
