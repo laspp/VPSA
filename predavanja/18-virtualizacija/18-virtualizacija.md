@@ -103,7 +103,7 @@ Operacijski sistemi so skozi čas dobivali vedno več funkcionalnosti, pomembnih
 - nadzornik vsebnikov teče kot servisi z več pravicami, kot jih ima navaden uporabnik; s tem, ko imam uporabnik v vsebniku več pravi,  olajša povezovanje delovnih tokov med več vsebniki
 - Vsebniki so podrejeni nadzorniku vsebnikov, ne pa uporabniški lupini
 
-### Vsebniki Apptainer[^Ap23]
+### Vsebniki Apptainer[^Ap25]
 
 - ogrodje [Apptainer](https://apptainer.org/) je prosto dostopna različica ogrodja [Singularity](https://sylabs.io/singularity/)
 - ti vsebniki so močno razširjeni na superračunalniških gručah, uporabljate pa jih lahko tudi na osebnem računalniku
