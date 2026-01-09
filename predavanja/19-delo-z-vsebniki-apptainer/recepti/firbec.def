@@ -2,7 +2,7 @@ Bootstrap: docker
 From: ubuntu:latest
 
 %files
-    files /*.jpg /img/
+    slike/*.jpg /img/
 
 %post
     # localization and non-interactive installation

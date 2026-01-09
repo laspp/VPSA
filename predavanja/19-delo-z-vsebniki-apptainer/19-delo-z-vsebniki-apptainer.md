@@ -71,7 +71,7 @@
   Apptainer> exit
   ```
 
-- primerjava izpisov potrdi, nekaj pomembnih lastnosti vsebnikov Apptainer:
+- primerjava izpisov potrdi nekaj pomembnih lastnosti vsebnikov Apptainer:
 
   - vsebnik prevzame množico nastavitev od gostitelja (hostname)
   - uporabniško ime v vsebniku je enako uporabniškemu imenu na gostitelju; enako je s pravicami uporabnika
@@ -161,14 +161,7 @@
 - spremenljiv vsebnik zahtevamo s stikalom `--sandbox`; tak vsebnik je na gostitelju predstavljen z mapo, v kateri so shranjene vse datoteke vsebnika; označili ga bomo s končnico `sb` (*angl.* SandBox)
 - po zaključeni gradnji spremenljiv vsebnik pretvorimo v nespremenljivega
 
-- če želimo vsebnik spreminjati, moramo imeti skrbniške pravice. Na lastnem računalniku uporabimo ukaz `sudo` (*angl.* super user do) ali stikalo `--fakeroot`, na večuporabniškem sistemu pa stikalo `--fakeroot`
-
-  ```bash
-  $ sudo apptainer shell modrec.sif         # Uporaba sudo
-  $ apptainer shell --fakeroot modrec.sif   # Uporaba stikala --fakeroot
-  ```
-
-- ko poskusimo v vsebniku posodobiti namestitveni program `apt` z ukazom `apt update`, dobimo opozorilo, da gre za datotečni sistem, namenjen samo za branje (*angl.* read-only file system); z ukazom `exit` se vrnemo na gostitelja
+- če želimo vsebnik spreminjati, moramo imeti skrbniške pravice - na lastnem računalniku uporabimo ukaz `sudo` (*angl.* super user do) ali stikalo `--fakeroot`, na večuporabniškem sistemu pa stikalo `--fakeroot`; dodati moramo tudi stikalo ``--writable`
 
   ```bash
   $ apptainer build --sandbox modrec.sb docker://ubuntu
@@ -180,12 +173,7 @@
   $ ls modrec.sb
   bin   dev          etc   lib    lib64   media  opt   root  sbin         srv  tmp  var
   boot  environment  home  lib32  libx32  mnt    proc  run   singularity  sys  usr
-  ```
 
-- ukaz `ls -l modrec.sb` nam razkrije, da je spremenljiv vsebnik dejansko mapa, v kateri so shranjene vse datoteke vsebnika
-- vstopimo v vsebnik in še enkrat namestimo program `fortune`; pazimo, da vstopimo kot skrbnik in da vsebnik pripravimo za pisanje
-
-  ```bash
   $ apptainer shell --fakeroot --writable modrec.sb
 
   Apptainer> apt update
@@ -214,7 +202,8 @@
   Apptainer> exit
   ```
 
-- v osnovni mapi vsebnika najdemo datoteko `singularity` - gre za skripto, ki se izvede ob zagonu vsebnike
+- ukaz `ls -l modrec.sb` nam razkrije, da je spremenljiv vsebnik dejansko mapa z množico datotek
+- v osnovni mapi vsebnika najdemo datoteko `singularity` - gre za skripto bash, ki se izvede ob zagonu vsebnika
 - vsebino datoteke `singularity` zamenjajmo z
 
   ```bash linenums="1"
@@ -250,11 +239,6 @@
   - iz glave, v kateri navedemo operacijski sistem, na katerem želimo vsebnik zgraditi (distribucijo in verzijo)
   - iz opcijskih razdelkov, v katere pišemo navodila za gradnjo in zaganjanje vsebnika
 
-Poglejmo si recept za gradnjo vsebnika <a href="recepti/modrec.def" download>`modrec.def`</a>. 
-
-```shell linenums="1"
---8<-- "recepti/modrec.def"
-```
 ### Glava
 
 - v glavi z zapisoma `Bootstrap: docker` in `From: ubuntu:latest` zahtevamo gradnjo vsebnika iz Linux distribucije `ubuntu`, najnovejše verzije, ki se nahaja v repozitoriju [Docker Hub](https://hub.docker.com/)
@@ -280,8 +264,11 @@ Poglejmo si recept za gradnjo vsebnika <a href="recepti/modrec.def" download>`mo
 
 ### Gradnja vsebnika
 
-- vsebnik iz recepta zgradimo s pomočjo ukaza `build` s skrbniškimi pravicami.
-- recept, po katerem je bil zgrajen vsebnik, lahko pridobimo iz vsebnika s pomočjo ukaza `apptainer inspect -d`.
+- primera:
+  - recept za gradnjo vsebnika <a href="recepti/modrec.def" download>`modrec.def`</a>
+  - recept za gradnjo vsebnika <a href="recepti/firbec.def" download>`firbec.def`</a>
+- vsebnik iz recepta zgradimo s pomočjo ukaza `build` s skrbniškimi pravicami
+- recept, po katerem je bil zgrajen vsebnik, lahko pridobimo iz vsebnika s pomočjo ukaza `apptainer inspect -d`
 
 ### Povezovanje z datotečnim sistemom gostitelja
 
