@@ -15,7 +15,7 @@
 
 - shemo sistema z navideznimi stroji prikazuje spodnja slika.
 
-  <img src="slike/shema-navidezni-stroji.png" width="50%" />
+  <img src="slike/shema-navidezni-stroji.png" width="40%" />
 
 - nadzornik navideznih strojev upravlja z navideznimi stroji, ponuja jim abstrakcijo strojne opreme fizičnega računalnika
 - uporabniška programska oprema se v navideznih strojih izvaja enako, kot bi se izvajala na fizičnem računalniku
@@ -45,7 +45,7 @@
 - v vsebniku ločeno namestimo samo potrebno uporabniško programsko opremo in dodatne knjižnice. Vsebnike uporabljamo z nadzornikom vsebnikov (*angl.* container engine). 
 - virtualizacijo z vsebniki prikazuje spodnja slika.
 
-  <img src="slike/shema-vsebniki.png" width="50%" />
+  <img src="slike/shema-vsebniki.png" width="40%" />
 
 - pomnilnik v operacijskem sistemu Linux je razdeljen na jedrni prostor (*angl.* kernel space) in uporabniški prostor (*angl.* user space)
 - procesi v uporabniškem prostoru imajo omejen dostop do pomnilnika, medtem ko ima jedro dostop do celotnega pomnilnika
@@ -91,9 +91,38 @@ Operacijski sistemi so skozi čas dobivali vedno več funkcionalnosti, pomembnih
 - težave imamo lahko z nezdružljivostjo strojne opreme in jedra operacijskega sistema
 - nezdružljivost knjižnic na operacijskem sistemu gostitelja in v vsebniku (če je potrebna komunikacije med njima)
 
-[^Sy21]: Sylabs, [Singularity User Guide](https://sylabs.io/guides/3.7/user-guide/introduction.html#why-use-singularity), 2021.
+### Vsebniki Docker
 
-[^Ka18]:  A. Kashev, [Working with Containers](https://goo.gl/YMcNLM), ISPDC 2018 Tutorial, University of Bern 2018.
+- vsebniki [Docker](https://www.docker.com/) predstavljajo industrijski standard za virtualizacijo operacijskega sistema
+- na voljo je kopica orodij za orkestracijo vsebnikov Docker, mnogi upravljavci oblačnih storitev omogočajo integracijo v svoje sisteme
+- primarno so namenjeni za zaganjanje storitev v oblakih, zato so zasnovani tako, da dajejo prednost izolaciji pred integracijo
+- z učinkovitim upravljanjem vsebnikov strankam zagotavljajo raztegljivost programske opreme, običajno zgrajene iz množice mikrostoritev, ki se izvajajo v vsebnikih
+- uporabniki lahko na spletni portal [dockerhub](https://hub.docker.com/) objavljamo recepte za gradnjo vsebnikov Docker
+- vsebniki Docker imajo nekaj lastnosti, zaradi katerih niso najprimernejši za uporabo v superračunalniških okoljih
+- nadzornik vsebnikov teče kot servisi z več pravicami, kot jih ima navaden uporabnik; s tem, ko imam uporabnik v vsebniku več pravi,  olajša povezovanje delovnih tokov med več vsebniki
+- Vsebniki so podrejeni nadzorniku vsebnikov, ne pa uporabniški lupini
+
+### Vsebniki Apptainer[^Ap23]
+
+- ogrodje [Apptainer](https://apptainer.org/) je prosto dostopna različica ogrodja [Singularity](https://sylabs.io/singularity/)
+- ti vsebniki so močno razširjeni na superračunalniških gručah, uporabljate pa jih lahko tudi na osebnem računalniku
+- pri gradnji vsebnikov Apptainer lahko uporabljamo slike vsebnikov Docker
+- vsak vsebnik je shranjen v eni sami datoteki, ki vključuje knjižnice, orodja, uporabniško programsko opremo. Zato vsebnike enostavno prenašamo med računalniškimi sistemi
+- uporabnik si v vsebnike namesti poljubno programsko opremo po svojih potrebah in željah
+- ogrodje uporablja enostaven varnostni model - pravice uporabnika iz gostitelja prenese v vsebnik, v vsebniku pa ne dovoli spreminjanja pravic
+- ogrodje Apptainer daje prednost integraciji pred izolacijo, s čimer olajša uporabo posebne strojne opreme: grafičnih procesnih enot, nizkolatenčnih širokopasovnih omrežij in dostop do datotečnega sistema gostitelja
+- vsebnike lahko opremimo s kriptografskimi mehanizmi, preko katerih uporabnik lahko preveri izvor vsebnika in se prepriča, da ni bil spremenjen
+- nadzornik vsebnikov Apptainer Launcher je navadna aplikacija, ki jo zaženemo iz uporabniške vrstice in se samodejno zaustavi, ko vsebnik zaključi z izvajanjem
+
+## Primerjava ogrodij Docker in Apptainer
+
+  <img src="slike/shema-docker-apptainer.png" width="90%" />
+
+[^Sy21]: Sylabs, [Singularity User Guide](https://sylabs.io/guides/3.7/user-guide/introduction.html#why-use-singularity), 2021
+
+[^Ka18]:  A. Kashev, [Working with Containers](https://goo.gl/YMcNLM), ISPDC 2018 Tutorial, University of Bern 2018
 
 [^Os16]: R. Osnat, [A Brief History of Containers: From the 1970s Till Now](
-https://blog.aquasec.com/a-brief-history-of-containers-from-1970s-chroot-to-docker-2016), Blog, 2020.
+https://blog.aquasec.com/a-brief-history-of-containers-from-1970s-chroot-to-docker-2016), Blog, 2020
+
+[^Ap23]: Sylabs, [Apptainer User Guide](https://apptainer.org/docs/user/latest/introduction.html#why-use-apptainer), 2025

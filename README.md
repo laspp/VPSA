@@ -86,7 +86,7 @@
   - vaje: konzultacije / obisk gruče Arnes
 
 - Teden 13:
-  - predavanja: 
+  - predavanja:
     [virtualizacija](predavanja/18-virtualizacija/18-virtualizacija.md)
   - vaje: konzultacije
   
