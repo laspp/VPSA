@@ -87,8 +87,8 @@
 
 - Teden 13:
   - predavanja:
-    [virtualizacija](predavanja/18-virtualizacija/18-virtualizacija.md)
-    [del z vsebniki Apptainer](predavanja/19-delo-z-vsebniki-apptainer/19-delo-z-vsebniki-apptainer.md)
+    [virtualizacija](predavanja/18-virtualizacija/18-virtualizacija.md),
+    [delo z vsebniki Apptainer](predavanja/19-delo-z-vsebniki-apptainer/19-delo-z-vsebniki-apptainer.md)
   - vaje: konzultacije
   
 - Teden 14:
