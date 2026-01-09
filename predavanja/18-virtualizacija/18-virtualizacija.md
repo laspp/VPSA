@@ -38,11 +38,12 @@
 
 ## Vsebniki
 
-- za oblake in superračunalniške gruče je primernejša virtualizacija z vsebniki[^Sy21][^Ka18]
+- za oblake in superračunalniške gruče je primernejša virtualizacija z vsebniki[^Ap25][^Ka18]
 - vsebniki ne virtualizirajo strojne opreme ampak operacijski sistem
 - vsebniki ne vključujejo operacijskega sistema, zato so manjši in nadzornik lažje preklaplja med njimi
 - jedro operacijskega sistema Linux dovoljuje izolacijo procesov od ostalega sistema; jedro operacijskega sistema poskrbi, da so vsebniki med seboj izolirani, vsakemu vsebniku pa omogoča dostop do skupnega operacijskega sistema in osnovnih knjižnic
-- v vsebniku ločeno namestimo samo potrebno uporabniško programsko opremo in dodatne knjižnice. Vsebnike uporabljamo z nadzornikom vsebnikov (*angl.* container engine). 
+- v vsebniku ločeno namestimo samo potrebno uporabniško programsko opremo in dodatne knjižnice
+- vsebnike upravljamo z nadzornikom vsebnikov (*angl.* container engine)
 - virtualizacijo z vsebniki prikazuje spodnja slika.
 
   <img src="slike/shema-vsebniki.png" width="40%" />
@@ -116,13 +117,11 @@ Operacijski sistemi so skozi čas dobivali vedno več funkcionalnosti, pomembnih
 
 ## Primerjava ogrodij Docker in Apptainer
 
-  <img src="slike/shema-docker-apptainer.png" width="90%" />
+  <img src="slike/shema-docker-apptainer.png" width="100%" alt="shema ogrodij Docker in Apptainer" />
 
-[^Sy21]: Sylabs, [Singularity User Guide](https://sylabs.io/guides/3.7/user-guide/introduction.html#why-use-singularity), 2021
+[^Ap25]: Sylabs, [Apptainer User Guide](https://apptainer.org/docs/user/latest/introduction.html#why-use-apptainer), 2025
 
 [^Ka18]:  A. Kashev, [Working with Containers](https://goo.gl/YMcNLM), ISPDC 2018 Tutorial, University of Bern 2018
 
 [^Os16]: R. Osnat, [A Brief History of Containers: From the 1970s Till Now](
 https://blog.aquasec.com/a-brief-history-of-containers-from-1970s-chroot-to-docker-2016), Blog, 2020
-
-[^Ap23]: Sylabs, [Apptainer User Guide](https://apptainer.org/docs/user/latest/introduction.html#why-use-apptainer), 2025
