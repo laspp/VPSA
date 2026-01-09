@@ -47,7 +47,7 @@
 
 - vpišimo še enkrat vse prejšnje ukaze in še nekaj dodatnih
 
-  ```console
+  ```bash
   Apptainer> hostname
   hpc-login1.arnes.si
   Apptainer> whoami
@@ -64,7 +64,7 @@
   cowsay  cowthink  lolcat
   Apptainer> cowsay "Hello!"
       --------
-  < Hello! >
+     < Hello! >
       --------
   ...
   Apptainer> cp /etc/os-release ./lolcow-os.info
@@ -107,24 +107,138 @@
 
   ```bash
   $ apptainer run lolcow_latest.sif
-      _______________________________
-     < Mon Jun 23 11:46:53 CEST 2025 >
-      -------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||     
-    $ ./lolcow_latest.sif
-        _______________________________
-       < Mon Jun 23 11:48:15 CEST 2025 >
-        -------------------------------
-    ...
-    $ apptainer run docker://sylabsio/lolcow:latest
-        _______________________________
-       < Mon Jun 23 11:48:56 CEST 2025 >
-        -------------------------------
-    ...
+   _______________________________
+  < Mon Jun 23 11:46:53 CEST 2025 >
+   -------------------------------
+          \   ^__^
+           \  (oo)\_______
+              (__)\       )\/\
+                  ||----w |
+                  ||     ||     
+  $ ./lolcow_latest.sif
+   _______________________________
+  < Mon Jun 23 11:48:15 CEST 2025 >
+   -------------------------------
+  ...
+  $ apptainer run docker://sylabsio/lolcow:latest
+   _______________________________
+  < Mon Jun 23 11:48:56 CEST 2025 >
+   -------------------------------
+  ...
   ```
 
 - v zadnjem primeru zaženemo vsebnik kar neposredno iz repozitorija: ogrodje Apptainer v tem primeru pripravi začasno sliko, ki jo po zaključku izvajanja vsebnika zbriše
+
+## Interaktivna gradnja vsebnika
+
+- zgradili bomo vsebnik zasnovan na operacijskem sistemu Linux **Ubuntu** in vanj namestili programček `fortune`.
+
+  ```bash
+  $ apptainer build modrec.sif docker://ubuntu
+  ```
+
+- vsebnik zaženimo v interaktivnem načinu
+
+  ```bash
+  $ apptainer shell modrec.sif
+  ```
+
+- poglejmo verzijo operacijskega sistema
+
+  ```bash
+  Apptainer> cat /etc/os-release
+  NAME="Ubuntu"
+  VERSION_ID="24.04"
+  VERSION="24.04.2 LTS (Noble Numbat)"
+  ...
+  ```
+
+### Nespremenljivi in spremenljivi vsebniki
+
+- ogrodje Apptainer pozna nespremenljive (*angl.* immutable) in spremenljive (*angl.* mutable) vsebnike
+- nespremenljive vsebnike spoznamo po datoteki s končnico `sif`; običajno delamo z njimi
+- spremenljive vsebnike potrebujemo predvsem med razvojem (gradnjo)
+- spremenljiv vsebnik zahtevamo s stikalom `--sandbox`; tak vsebnik je na gostitelju predstavljen z mapo, v kateri so shranjene vse datoteke vsebnika; označili ga bomo s končnico `sb` (*angl.* SandBox)
+- po zaključeni gradnji spremenljiv vsebnik pretvorimo v nespremenljivega
+
+- če želimo vsebnik spreminjati, moramo imeti skrbniške pravice. Na lastnem računalniku uporabimo ukaz `sudo` (*angl.* super user do) ali stikalo `--fakeroot`, na večuporabniškem sistemu pa stikalo `--fakeroot`
+
+  ```bash
+  $ sudo apptainer shell modrec.sif         # Uporaba sudo
+  $ apptainer shell --fakeroot modrec.sif   # Uporaba stikala --fakeroot
+  ```
+
+- ko poskusimo v vsebniku posodobiti namestitveni program `apt` z ukazom `apt update`, dobimo opozorilo, da gre za datotečni sistem, namenjen samo za branje (*angl.* read-only file system); z ukazom `exit` se vrnemo na gostitelja
+
+  ```bash
+  $ apptainer build --sandbox modrec.sb docker://ubuntu
+  INFO:    Starting build...
+  ...
+  INFO:    Creating sandbox directory...
+  INFO:    Build complete: modrec.sb
+
+  $ ls modrec.sb
+  bin   dev          etc   lib    lib64   media  opt   root  sbin         srv  tmp  var
+  boot  environment  home  lib32  libx32  mnt    proc  run   singularity  sys  usr
+  ```
+
+- ukaz `ls -l modrec.sb` nam razkrije, da je spremenljiv vsebnik dejansko mapa, v kateri so shranjene vse datoteke vsebnika
+- vstopimo v vsebnik in še enkrat namestimo program `fortune`; pazimo, da vstopimo kot skrbnik in da vsebnik pripravimo za pisanje
+
+  ```bash
+  $ apptainer shell --fakeroot --writable modrec.sb
+
+  Apptainer> apt update
+  ...
+  1 package can be upgraded. Run 'apt list --upgradable' to see it.
+
+  Apptainer> apt install fortune
+  ...
+  The following NEW packages will be installed:
+  fortune-mod fortunes-min librecode0
+  0 upgraded, 3 newly installed, 0 to remove and 1 not upgraded.
+  Need to get 762 kB of archives.
+  After this operation, 2154 kB of additional disk space will be used.
+  ...
+
+  Apptainer> /usr/games/fortune
+  It's always darkest just before it gets pitch black.
+
+  Apptainer> exit
+
+  $ apptainer exec modrec.sb /usr/games/fortune
+  Never eat more than you can lift.
+
+  $ apptainer run modrec.sb
+
+  Singularity> exit
+  ```
+
+- v osnovni mapi vsebnika najdemo datoteko `singularity` - gre za skripto, ki se izvede ob zagonu vsebnike
+- vsebino datoteko `singularity` zamenjajmo z
+
+  ```bash linenums="1"
+  #!/bin/sh
+  exec /usr/games/fortune "$@"
+  ```
+
+- preverimo delovanje
+
+  ```bash
+  $ apptainer run modrec.sb
+  There has been an alarming increase in the number of things you know nothing about.
+  ```
+
+- ko smo z vsebnikom zadovoljni, ga lahko pretvorimo v nespremenljivega
+
+  ```bash
+  $ apptainer build modrec.sif modrec.sb
+  Build target 'modrec.sif' already exists and will be deleted during the build process. 
+  Do you want to continue? [N/y]y
+  INFO:    Starting build...
+  INFO:    Creating SIF file...
+  INFO:    Build complete: modrec.sif
+
+  $ ./modrec.sif
+  Computers are not intelligent. They only think they are.
+  ```
