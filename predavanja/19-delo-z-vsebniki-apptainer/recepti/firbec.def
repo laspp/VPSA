@@ -1,0 +1,64 @@
+Bootstrap: docker
+From: ubuntu:latest
+
+%files
+    files /*.jpg /img/
+
+%post
+    # localization and non-interactive installation
+    export LC_ALL=C
+    export DEBIAN_FRONTEND=noninteractive
+
+    # install wget
+    apt update -y
+    apt install -y wget
+
+    # copy viu from the repository
+    wget -P /exec https://github.com/atanunq/viu/releases/download/v1.3.0/viu
+
+    # set permissions
+    chmod a+rx /exec/viu
+    chmod a+r /img/*
+
+%environment
+    export LC_ALL=C
+    export PATH=/exec:${PATH}
+
+%runscript
+    if [ $# -eq 0 ]
+    then
+        viu /img/*
+        echo
+        echo "Container includes terminal image viewer viu"
+        echo
+        echo "Usage:"
+        echo "  apptainer run firbec.sif [PARAMS]"
+        echo "  ./firbec.sif [PARAMS]"
+        echo "  apptainer exec firbec.sif viu [PARAMS]"
+        echo
+        echo "  set [PARAMS] == --help for details"
+        echo
+    else
+        viu $@
+    fi
+
+%test
+    test -x /exec/viu
+    echo $?
+    test -f /img/210322_VEGA_083.jpg
+    echo $?
+
+%labels
+    Container   firbec with terminal viewer viu
+    Version     1.1
+    Description Demonstracija vsebnikov pri predmetu VPSA
+
+%help
+    Container includes terminal image viewer viu
+
+    Usage:
+        apptainer run firbec.sif [PARAMS]
+        ./firbec.sif [PARAMS]
+        apptainer exec firbec.sif viu [PARAMS]
+
+        set [PARAMS] == --help for details

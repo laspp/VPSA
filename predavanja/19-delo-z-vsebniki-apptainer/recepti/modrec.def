@@ -1,0 +1,50 @@
+# GLAVA
+Bootstrap: docker
+From: ubuntu:latest
+
+# RAZDELKI
+%setup
+    # ukaz, ki se bo izvedel na gostitelju po namestitvi OS v vsebniku
+    (echo "======"; echo "modrec"; echo "======") > info.txt
+
+%files
+    # datoteke, ki jih iz gostitelja prenesemo v vsebnik
+    ./info.txt /info/
+
+%post
+    # namestitveni koraki v vsebniku
+    export LC_ALL=C    
+    export DEBIAN_FRONTEND=noninteractive
+
+    apt update -y
+    apt install -y fortune
+    ln -s /usr/games/fortune /usr/bin/fortune
+
+%environment
+    # nastavitev spremenljivk okolja ob zagonu vsebnika
+    export LC_ALL=C    
+	
+%runscript
+    # skripta, ki se izvede ob zagonu vsebnika
+    fortune "$@"
+
+%test
+    # skripta za preverjanje pravilnosti delovanja vsebnika
+    cat /info/info.txt
+    fortune
+    test -x /usr/bin/fortune
+    echo $?
+
+%labels
+    # poljubne oznake vsebnika kot pari oznaka - vrednost
+    Container   modrec
+    Version     1.0
+    Description Demonstracija vsebnikov pri predmetu VPSA
+
+%help
+    # navodila za uporabo vsebnika
+    Vsebnik vključuje progam fortune za izpisovanje globokih misli
+    Uporaba:
+        apptainer run modrec.sif
+        ./modrec.sif
+        apptainer exec modrec.sif fortune

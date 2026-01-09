@@ -211,11 +211,11 @@
 
   $ apptainer run modrec.sb
 
-  Singularity> exit
+  Apptainer> exit
   ```
 
 - v osnovni mapi vsebnika najdemo datoteko `singularity` - gre za skripto, ki se izvede ob zagonu vsebnike
-- vsebino datoteko `singularity` zamenjajmo z
+- vsebino datoteke `singularity` zamenjajmo z
 
   ```bash linenums="1"
   #!/bin/sh
@@ -242,3 +242,74 @@
   $ ./modrec.sif
   Computers are not intelligent. They only think they are.
   ```
+
+## Recepti za vsebnike
+
+- ko za gradnjo vsebnika pripravimo recept (*angl.* recipe / definition file / def file), zagotovimo, da bo vsakdo lahko vsebnik zgradil na enak način kot mi
+- recept je sestavljen iz dveh delov:
+  - iz glave, v kateri navedemo operacijski sistem, na katerem želimo vsebnik zgraditi (distribucijo in verzijo)
+  - iz opcijskih razdelkov, v katere pišemo navodila za gradnjo in zaganjanje vsebnika
+
+Poglejmo si recept za gradnjo vsebnika <a href="recepti/modrec.def" download>`modrec.def`</a>. 
+
+```shell linenums="1"
+--8<-- "recepti/modrec.def"
+```
+### Glava
+
+- v glavi z zapisoma `Bootstrap: docker` in `From: ubuntu:latest` zahtevamo gradnjo vsebnika iz Linux distribucije `ubuntu`, najnovejše verzije, ki se nahaja v repozitoriju [Docker Hub](https://hub.docker.com/)
+
+- nekaj pogostih nastavitev za `Bootstrap`:
+
+  - `library`: če izhajamo iz vsebnika v repozitoriju  [Singularity Cloud Library](https://cloud.sylabs.io/library)
+  - `docker`: če izhajamo iz vsebnika v repozitoriju [Docker Hub](https://hub.docker.com/)
+  - `localimage`: če vsebnik gradimo iz že obstoječe lokalne slike vsebnika
+
+- Za nastavitev `From` vpišemo v prvih dveh primerih oznako vsebnika v repozitoriju, v zadnjem primeru pa ime vsebnika na lokalnem računalniku
+
+### Razdelki
+
+- `%setup`: pišemo ukaze, ki jih bo ogrodje Singularity izvedlo na gostitelju potem, ko bo nameščen operacijski sistem v vsebniku
+- `%files`: navedemo datoteke, ki jih želimo iz gostitelja prenesti v vsebnik; podatke za vsako datoteko pišemo v svojo vrstico, pri čemer najprej navedemo ime datoteke na gostitelju, nato pa pot oziroma ime datoteke v vsebniku
+- `%post`: v tem delu nameščamo programsko opremo v vsebniku in s spleta prenašamo datoteke; med nameščanjem programi velikokrat nastavijo tudi okoljske spremenljivke; okoljske spremenljivke, navedene v razdelku `%post` veljajo samo v času nameščanja
+- `%environment`: sem vpišemo nastavitve okoljskih spremenljivk, ki se morajo izvesti ob zagonu vsebnika; z nastavitvijo spremenljivke `LC_ALL=C` povozimo nastavljeno lokalizacijo z enostavno lokalizacijo `C` (*angl.* Computers) z ASCII kodno tabelo in ameriško angleščino. 
+- `%runscript`: ukazi, napisani v tem razdelku, se bodo izvedli ob zagonu vsebnika z ukazom `apptainer run`
+- `%test`: v razdelek `%test` napišemo ukaze, s katerimi preverimo pravilnost delovanja vsebnika; ukazi v razdelku se zaženejo po končani gradnji vsebnika ali ob klicu ukaza `apptainer test`
+- `%labels`: osnovni podatki o vsebniku v obliki oznaka - vrednost; osnovne podatke o vsebniku izpišemo z ukazom `apptainer inspect`
+- `%help`: sem napišemo navodila za uporabo vsebnika; uporabnik jih izpiše z ukazom `apptainer run-help`.
+
+### Gradnja vsebnika
+
+- vsebnik iz recepta zgradimo s pomočjo ukaza `build` s skrbniškimi pravicami.
+- recept, po katerem je bil zgrajen vsebnik, lahko pridobimo iz vsebnika s pomočjo ukaza `apptainer inspect -d`.
+
+### Povezovanje z datotečnim sistemom gostitelja
+
+- ogrodje Apptainer, za razliko od mnogih drugih ogrodij za gradnjo vsebnikov, poskrbi, da v vsebniku vidimo datotečni sistem gostitelja
+- vsebnik privzeto vidi mape: `$HOME` (glavna mapa uporabnika), `$PWD` (trenutna mapa) , `/tmp` , `/proc` , `/sys` in `/dev`
+- mape, katerih vsebino bi še radi videli v vsebniku, povežemo z vsebnikom ob klicu ukaza `apptainer exec` ali `apptainer run`, tako da navedemo stikalo `--bind` z argumentom `mapa-gostitelja:mapa-vsebnika`; če želimo povezati več map, pare `mapa-gostitelja:mapa-vsebnika` ločimo z vejicami.
+
+- program `fortune` izpisuje modrosti, ki jih najde v vsebniku v mapi `/usr/share/games/fortunes`
+- kadar ob klicu programa `fortune` dodamo argument z imenom datoteke z modrostmi, bo izbral modrost iz te datoteke
+- program lahko izpisuje tudi naše modrosti, ki niso shranjene v vsebniku
+
+  - pripraviti moramo dve datoteki: besedilno datoteko brez končnice, v kateri so modrosti ločene z znakom `%`, in za hitrejši dostop do modrosti še datoteko s končnico `dat`; slednjo ustvarimo iz besedilne datoteke z ukazom `strfile`, ki ga najdemo v našem vsebniku
+  - predpostavimo, da sta datoteki nameščeni v mapi [modrosti](./recepti/modrosti/), ki je podmapa mape z vsebnikom
+
+    ```bash
+    $ apptainer run --bind ./modrosti:/usr/share/games/fortunes modrec.sif pregovori
+    Sreča je zaveznica pogumnih.
+
+    $ apptainer run --bind ./modrosti:/usr/share/games/fortunes modrec.sif riddles
+    No fortunes found
+    ```
+
+## Dobre prakse pri gradnji vsebnikov
+
+- programske pakete, programe, podatkovne datoteke in podobno nameščamo v mape operacijskega sistema in ne v mape, kot so na primer `/home`, `/tmp`
+- vsebnik vedno ustrezno dokumentiramo, saj imajo uporabniki imajo radi vsebnike, ki jih znajo hitro uporabljati
+- pomoč za uporabo lahko vključimo v recepte v `%runscript` ali `%help`
+- v vsebnik vključimo kakšen enostaven testni primer iz katerega je razvidno tudi, kako ga uporabljati
+- poskrbimo za pravilne nastavitve pravic dostopa do datotek; lastnik datotek v vsebniku mora biti sistemski račun
+- poskrbimo, da datoteke z občutljivo vsebino, na primer `/etc/passwd`, `/etc/group`, `/etc/shadow` ne vsebujejo gesel
+- produkcijske vsebnike vedno gradimo iz receptov in tako zagotovimo ponovljivost gradnje in delovanja
