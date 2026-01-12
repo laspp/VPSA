@@ -94,4 +94,4 @@
 - Teden 14:
   - predavanje:
     reševanje izpitnih nalog
-  - vaje:
+  - vaje: [vsebniki Appatiner](vaje/10-vsebniki/Vsebniki.md)

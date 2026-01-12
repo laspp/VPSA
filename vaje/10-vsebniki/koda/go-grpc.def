@@ -1,0 +1,35 @@
+Bootstrap: docker
+From: ubuntu:24.04
+
+%post
+    # Posodobitev paketnega sistema
+    
+
+    # Namestitev osnovnih orodij
+
+
+    # Namestitev Go
+
+
+    # Nastavitev začasnih okoljskih spremenljivk za gradnjo
+
+
+    # Namestitev prevajalnika Protocol Buffers compiler
+
+
+    # Namestitev modulov za gRPC
+
+
+
+%environment
+   # Nastavitev poti do Go
+
+
+%runscript
+    # Privzeto prikaži različico Go
+    
+%labels
+    # Metapodatki o vsebniku (avtor, različica, opis)
+
+%help
+    # Pomoč in informacije o vsebniku
