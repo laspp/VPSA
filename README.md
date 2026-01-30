@@ -92,6 +92,9 @@
   - vaje: konzultacije
   
 - Teden 14:
-  - predavanje:
+  - predavanja:
     reševanje izpitnih nalog
   - vaje: [vsebniki Appatiner](vaje/10-vsebniki/Vsebniki.md)
+
+- Izpiti
+  - [30. 1. 2026](izpiti/Izpit-20260130-resitve.pdf)
