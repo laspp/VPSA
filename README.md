@@ -98,3 +98,4 @@
 
 - Izpiti
   - [30. 1. 2026](izpiti/Izpit-20260130-resitve.pdf)
+  - [9. 2. 2026](izpiti/Izpit-20260209-resitve.pdf)
