@@ -17,7 +17,7 @@
 
 - delo na superračunalniških gručah
 - operacijski sistem linux
-- programski jezik go s potrebnimi knjižnicami
+- programski jezik Go s potrebnimi knjižnicami
 - razvojno okolje VSCode
 
 ## Literatura
@@ -41,10 +41,10 @@
 
 ## Ocena
 
-- 50 % iz projektne naloge
-  - predstavljena bo sredi semestra, delate jo v parih
-  - oddaja do konca semestra, zagovor do prvega izpitnega roka
-  - uspešno zagovorjena projektna naloga je pogoj za pristop k izpitu
-- 50 % izpit
-  - pogoj za pristop k izpitu je oddanih 6 od 8 kratkih domačih nalog, ki jih dobite na vajah 
-  - izpit opravite, če zberete vsaj 50 % točk
+- pogoj za pristop k izpitu je pozitivno ocenjenih 6 od 8 kratkih domačih nalog, ki jih dobite na vajah in oddate na učilnico 
+
+- pisni izpit
+
+  - 50 % programerske naloge
+  - 50 % vprašanja iz snovi
+  - za končno pozitivno oceno morata biti oba dela izpiti pozitivna
