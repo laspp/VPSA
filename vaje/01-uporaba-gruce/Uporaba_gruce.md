@@ -26,7 +26,9 @@ Pri predmetu Porazdeljeni sistemi bomo za delo lahko uporabljali računsko gruč
   - Porazdeljen datotečni sistem [Ceph](https://ceph.io/en/)
   - Sistem za upravljanje s posli [SLURM](https://slurm.schedmd.com/)
 
-Do sistema bomo dostopali preko povezave SSH. Uporabniške račune in gesla za dostop najdete na [spletni učilnici FRI](https://ucilnica.fri.uni-lj.si/mod/assign/view.php?id=37264). Dostop je mogoč samo z uporabo ustreznega ključa SSH in dvostopenjske avtentikacije (2FA). Kako si ustvarite lasten ključ in ga dodate v sistem za upravljanje z identitetami, je opisano v [navodilih za ključ SSH](https://doc.sling.si/workshops/supercomputing-essentials/02-slurm/06-ssh-key/). Za vzpostavitev dvostopenjske avtentikacije sledite [navodilom za 2FA](https://www.sling.si/dvostopenjska-avtentikacija-za-dostop-do-arnesove-racunske-gruce/). Ko ste uredili vse potrebno, se na gručo preko ukazne vrstice povežete z ukazom:
+## Dostop
+
+Do sistema bomo dostopali preko povezave SSH. Uporabniške račune in gesla za dostop najdete na [spletni učilnici FRI](https://ucilnica.fri.uni-lj.si/mod/assign/view.php?id=37264). Pred prvo prijavo morate vaše začetno geslo spremeniti. To naredite na spletni strani [fido.sling.si](https://fido.sling.si/). Dostop je mogoč samo z uporabo ustreznega ključa SSH in dvostopenjske avtentikacije (2FA). Kako si ustvarite lasten ključ in ga dodate v sistem za upravljanje z identitetami, je opisano v [navodilih za ključ SSH](https://doc.sling.si/workshops/supercomputing-essentials/02-slurm/06-ssh-key/). Za vzpostavitev dvostopenjske avtentikacije sledite [navodilom za 2FA](https://www.sling.si/dvostopenjska-avtentikacija-za-dostop-do-arnesove-racunske-gruce/). Ko ste uredili vse potrebno, se na gručo preko ukazne vrstice povežete z ukazom:
 
 ```bash
 ssh <uporabnisko_ime>@hpc-login3.arnes.si
