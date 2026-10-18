@@ -14,12 +14,14 @@ import (
 func getLettersFromMessage(message string) <-chan rune {
 
 	defer fmt.Println("getLettersFromMessage: done")
+
 	fmt.Println("getLettersFromMessage: start")
 	letterStream := make(chan rune)
 
 	go func() {
 		defer fmt.Println("anonymous function: done") // prvi napisani defer se izvede zadnji
 		defer close(letterStream)
+		
 		fmt.Println("anonymous function: start") // prvi napisani defer se izvede zadnji
 		for _, letter := range message {
 			letterStream <- letter

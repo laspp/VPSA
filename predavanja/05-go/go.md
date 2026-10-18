@@ -28,7 +28,7 @@
 
 ## Podpora za sočasnost [CG:2]
 
-- model opravilo kanal (Foster, 1995), model CSP, *angl.* Communicating Sequential Processes (Hoare, 1978)
+- model opravilo-kanal (Foster, 1995), model CSP, *angl.* Communicating Sequential Processes (Hoare, 1978)
 
   - leto 1978: ali uporabljati stavek goto, osnutki objektnega programiranja, malo aktivnosti na sočasnosti
   - CSP predstavljen kot programski jezik
@@ -38,7 +38,7 @@
     - programski jezik zagotavlja pravilno komunikacijo med nalogami
   - Hoare pokaže, da je mnogo problemov zelo enostavno reševati na ta način
   - z leti se je pokazalo, da je ta model zelo blizu našemu načinu razmišljanja
-- logiko modela opravilo kanal privzame jezik go
+- logiko modela opravilo-kanal privzame jezik go
   - naloge poimenuje gorutine
   - gorutine si podatke izmenjujejo preko kanalov
   - hitro preklapljanje med gorutinami nam omogoči, da
@@ -53,7 +53,7 @@
 
 ## Gorutine [OPG:10.1]
 
-- sinonimi: naloga, sorutina in gorutina
+- sinonimi: naloga in gorutina
 - osnovna enota programa v jeziku go
 - program v jeziku go ima vedno vsaj glavno gorutino
 - glavna gorutina se zažene, ko se proces začne izvajati
@@ -184,8 +184,8 @@
     [pozdrav-6a.go](koda/pozdrav-6a.go)
 
     - glavna gorutina ustvari kanal
-    - dodatne gorutine v kanal pišejo
-    - zadnja dodatna gorutina se konča pred zadnjim branjem glavne gorutine
+    - dodatni gorutini v kanal pišeta
+    - zadnja dodatna gorutina zaključi pred zadnjim branjem glavne gorutine
 
     [pozdrav-6b.go](koda/pozdrav-6b.go)
   
@@ -208,8 +208,8 @@
     [pozdrav-7.go](koda/pozdrav-7.go)
 
     - glavna gorutina ustvari kanal z medpomnilnikom za vsa sporočila
-    - dodatne gorutine v kanal pišejo
-    - vse dodatne gorutine se končajo pred izpisovanjem v glavni gorutini
+    - dodatni gorutini v kanal pišeta
+    - dodatni gorutini se končata pred izpisovanjem v glavni gorutini
 
 - zapiranje kanalov
 
@@ -233,8 +233,8 @@
     [pozdrav-8.go](koda/pozdrav-8.go)
 
     - glavna gorutina ustvari kanal z medpomnilnikom za eno sporočilo
-    - dodatne gorutine v kanal pišejo
-    - vse dodatne gorutine se končajo pred izpisovanjem v glavni gorutini
+    - dodatna gorutina v kanal piše
+    - dodatna gorutina se končaa pred izpisovanjem v glavni gorutini
     - glavna gorutina želi prebrati eno vrednost preveč; ker smo kanal predhodno zaprli, dobimo privzeto vrednost, zastavica `ok` pa je `false`
 
     [pozdrav-9.go](koda/pozdrav-9.go)
@@ -267,7 +267,7 @@
 
 ### Sinhronizacija s kanali
 
-- kanal uporabimo kot sinhronizacijski element, po njem nič ne prenašamo
+- kanal lahko uporabimo kot sinhronizacijski element, pri tem po njem nič ne prenašamo
 - da gre za sinhronizacijski element, dodatno poudarimo s kanalom za podatkovni tip `struct{}` (prazna struktura)
 
 - primer: [razglas.go](koda/razglas.go)
@@ -287,12 +287,13 @@
   - do branja pride, če se pojavi vsebina ali se kanal zapre
   - do pisanja pride, če je v kanalu prostor
   - če ni pogojev za branje ali pisanje, stavek `select` blokira izvajanje
-- bre uporabe veje `default`, čakanje na dogodek tako ne poteka v neskončni zanki in zato le malenkostno obremenjuje procesor
+- čakanje na dogodek ne poteka v neskončni zanki in zato le malenkostno obremenjuje procesor (izjema je uporaba privzete veje)
 - s stavkom `select` čakamo na sporočila, poskrbimo za njihovo obdelavo, prekličemo gorutino zaradi napake ali izteka časa 
 - če ima pri stavku `select` več vej pogoje za izvajanje, izvajalni sistem jezika go naključno izbere in izvede eno od njih
   - jezik go ne pozna vsebine naše programske kode, zato ne more vedeti, katera veja ima prioriteto
   - brez poznavanja ozadja je zato pri izvajanju najrazličnejših programov najbolj enostavno in sprejemljivo naključno izbiranje
 - če nobena veja v stavku `select` nima pogojev za izvajanje, se, če je napisana, izvede privzeta koda
+- uporabi privzete veje `default` se izogibamo, saj vsakič zaključi stavek `select`; če je stavek `select` del neskončne zanke `for` neprestano klicanje stavkov `select` močno obremeni procesor
 
 - [povezovanje-kanalov-1.go](koda/povezovanje-kanalov-1.go)
   - gorutina `reader` posluša na dveh kanalih
