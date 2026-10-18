@@ -6,6 +6,7 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"time"
 )
 
 const printouts = 10
@@ -26,6 +27,8 @@ func main() {
 
 	go hello("hello")
 	go hello("world")
+
+	time.Sleep(time.Second)
 
 	for i := 0; i < 2*printouts; i++ {
 		msg := <-stringStream
