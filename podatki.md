@@ -43,8 +43,13 @@
 
 - pogoj za pristop k izpitu je pozitivno ocenjenih 6 od 8 kratkih domačih nalog, ki jih dobite na vajah in oddate na učilnico 
 
+- kolokvija
+
+  - v semestra bosta dva neobvezna kolokvija iz reševanja programerskih nalog (predvidoma 23. 11. 2026 in 21. 12. 2026)
+  - oceno iz programerskih nalog na izpitu lahko nadomestite s pozitivno povprečno oceno kolokvijev
+
 - pisni izpit
 
-  - 50 % programerske naloge
+  - 50 % programerske naloge (lahko nadomestite z oceno kolokvijev)
   - 50 % vprašanja iz snovi
   - za končno pozitivno oceno morata biti oba dela izpiti pozitivna
