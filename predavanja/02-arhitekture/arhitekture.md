@@ -37,7 +37,7 @@
 
 - cevovod
   - funkcijske enote so razvrščene v stopnje
-  - izvajanje stopnenj naj bi bile čim bolj enako dolgo
+  - izvajanje stopenj naj bi bile čim bolj enako dolgo
 
 - vektorski ukazi
   - hkratno izvajanje istega ukaza na več skalarnih operandih 
@@ -142,7 +142,7 @@
 
 <img src="slike/pospesevalnik.png" alt="pospeševalnik" width="50%">
 
-- nekoč matematični soprocesorji, danes grafični procesorji
+- nekoč matematični soprocesorji, danes grafični pospeševalniki
 - danes imajo notranjo hierarhično pomnilniško strukturo in mnogo enostavnih procesnih elementov
 - niso popolnoma samostojni
 - razbremenjevanje glavnega procesorja

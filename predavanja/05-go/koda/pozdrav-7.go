@@ -28,7 +28,7 @@ func main() {
 	go hello("hello")
 	go hello("world")
 
-	time.Sleep(time.Second)
+	time.Sleep(3 * time.Second)
 
 	for i := 0; i < 2*printouts; i++ {
 		msg := <-stringStream
