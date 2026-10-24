@@ -50,5 +50,5 @@ func main() {
 	pi.value = 4.0 * float64(pi.hits.Load()) / float64(pi.shots.Load())
 	timeElapsed := time.Since(timeStart)
 	// izpišemo
-	fmt.Println("pi:", pi, "goroutines:", *gPtr, "time:", timeElapsed)
+	fmt.Println("pi:", pi.shots.Load(), pi.hits.Load(), pi.value, "goroutines:", *gPtr, "time:", timeElapsed)
 }

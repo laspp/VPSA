@@ -1,7 +1,7 @@
 // računanje pi po metodi Monte Carlo
 // vzporedno
-// za gr > 1 rezultat ni pravilen, saj pride do tveganega stanja
-// 		go run --race pi-2.go --g=2
+// za g > 1 rezultat ni pravilen, saj pride do tveganega stanja
+// 		go run --race pi-3.go --g=2
 
 package main
 

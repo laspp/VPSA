@@ -18,7 +18,7 @@
   - naključno streljamo v kvadrat
   - štejemo število strelov ($shots$) in število zadetkov ($hits$) v krožni izsek
   - pri velikem številu strelov je verjetnost zadetka v krožni izsek enaka razmerju ploščin krožnega izseka in kvadrata, $$\frac{hits}{shots}\approx \frac{\pi/4}{1}$$ in torej $$\pi \approx 4 \frac{hits}{shots}$$
-  - relativna natančnost izračuna je $1/\sqrt{shots}$
+  - relativna natančnost izračuna je sorazmerna z $1/\sqrt{shots}$
 
 - zaženemo več gorutin in jim razdelimo delo
 
@@ -29,8 +29,8 @@
   - rezultat je napačen
     - operator `shots++` je okrajšava za  `shots = shots + 1`
     - procesorsko jedro mora prebrati podatek, ga povečati in shraniti
-    - lahko je prva gorutina prebrala vrednost, nato je zaspala; medtem druga gorutina prišteva; ko se prva gorutina zbudi prišteje vrednost in zapiše; vse kar je vmes delala druga gorutina smo izgubili ...
-    - vrstico lahko izvaja samo ena gorutina naenkrat
+    - lahko je prva gorutina prebrala vrednost, nato je zaspala; medtem druga gorutina prišteva; ko se prva gorutina zbudi, prišteje vrednost in zapiše; vse, kar je vmes delala druga gorutina, smo izgubili ...
+    - vrstico bo smela izvajati samo ena gorutina naenkrat
 
 - **kritični odsek** je del kode, ki ga sme izvajati samo ena gorutina naenkrat
   - gorutina ne sme vstopiti v kritični odsek, če je trenutno v njem druga gorutina
@@ -48,7 +48,7 @@
 
 - prištevanje dovolimo samo eni gorutini - drugi poskus
 
-    [pi-4.go](koda/pi-4.go)
+  [pi-4.go](koda/pi-4.go)
 
   - uporabimo spremenljivko `lock`, vendar tokrat njena vrednost določa, katera gorutina lahko vstopi
   - rezultat je (večinoma) pravilen
@@ -62,7 +62,7 @@
 - v kritičnem odseku je lahko naenkrat samo ena gorutina
 - ključavnica je pomnilniška beseda, katere vsebina je binarna vrednost: zaklenjeno/odklenjeno
 - vsaka gorutina pred vstopom v kritični odsek preveri stanje ključavnice
-  - če je odklenjena, jo zaklene in vstopi v kritično sekcijo
+  - če je odklenjena, jo zaklene in vstopi v kritični odsek
   - če je zaklenjena, čaka pred kritičnim odsekom (v zanki) dokler se ne odklene
 - po izstopu iz kritičnega odseka mora gorutina odkleniti ključavnico, da omogoči vstop drugim gorutinam
 - branje, nastavljanje in zaklepanje ključavnice mora biti **atomarna operacija**
@@ -75,7 +75,7 @@
 - atomarna operacija se bo znotraj obsega delovanja izvedla v celoti, brez zunanjih vplivov
 - primer: operacija `shots++` je sestavljena iz treh atomarnih operacij (branje, povečevanje in shranjevanje); za procesor to ni atomarna operacija; atomarna je v sekvenčnem programu, ne pa tudi v sočasnem programu
 - če je operacija atomarna v obsegu sočasnega programa, je varna in jo lahko uporabimo pri pisanju logično pravilnih sočasnih programov
-- za optimizacijo programov je pomembno, da prepoznamo odseke kode, ki morajo biti atomarni, in poskrbeti, da je takih odsekov čim manj
+- za optimizacijo programov je pomembno, da prepoznamo odseke kode, ki morajo biti atomarni, in poskrbimo, da je takih odsekov čim manj
 
 ### Podpora za delo s ključavnicami v procesorjih
 
@@ -95,10 +95,10 @@
   - podobna rešitev kot preveri in nastavi
   - Intel: `lock`: v okviru protokola MESI: najprej se uskladi predpomnilniški blok med vsemi procesorskimi jedri, nato je v ekskluzivni lasti procesorskega jedra, ki je izdalo ukaz z `lock`; dokler se izvaja ukaz, ga ne more uporabljati nobeno drugo procesorsko jedro
 - nalaganje in pogojno shranjevanje (*angl.* [load-link/store-conditional](https://en.wikipedia.org/wiki/Load-link/store-conditional), LL/SC)
-  - prvič se pojavi pri procesorjih RISC, danes v ARM in RISC V
+  - prvič se pojavi pri procesorjih RISC, danes v ARM in RISC-V
   - s parom nalaganje in pogojno shranjevanje procesor zagotavlja atomarno posodabljanje pomnilnika v večjedrnih sistemih
   - ni potrebno zaklepanje pomnilniških lokacij za izključni dostop enega procesorja
-  - z ukazom LL naložimo vrednost iz pomnilniške lokacije v register, jo spremenimo in s ukazom SC novo vrednost napišemo nazaj v pomnilnik
+  - z ukazom LL naložimo vrednost iz pomnilniške lokacije v register, jo spremenimo in z ukazom SC novo vrednost zapišemo nazaj v pomnilnik
   - pomnilnik je razdeljen na logične bloke; vsak logični blok mora voditi evidenco o procesorju, ki je zadnji izstavil ukaz LL
   - ukaz SC uspe - vrednost se bo zapisala v pomnilnik - samo v primeru, če je vmes ni spremenil noben drug procesor
   - ali je bilo zapisovanje uspešno ali ne, pokaže ustrezna zastavica
@@ -120,7 +120,7 @@
 
   [pi-6.go](koda/pi-6.go)
 
-- uporabimo paket `sync/atomic` in atomarno prištevanje
+  - uporabimo paket `sync/atomic` in atomarno prištevanje
 
   [pi-7.go](koda/pi-7.go)
 
@@ -136,7 +136,7 @@
   [pi-8.go](koda/pi-8.go)
 
   - ustvarimo rezino (*angl.* slice) za strukture `pi`, za vsako gorutino svojo
-  - rezultat je slabši, saj so pomnilniške lokacije v rezini skupaj in prihaja do usklajevanja predpomnilnikov (lažni skupni podatki, *angl.* false sharing)
+  - izvajanje je počasnejše, saj so pomnilniške lokacije v rezini skupaj in prihaja do usklajevanja predpomnilnikov (lažni skupni podatki, *angl.* false sharing)
   - po pridruževanju gorutin, delne vsote zaporedno seštejemo
 
   [pi-9.go](koda/pi-9.go)
@@ -152,7 +152,7 @@
   - vsaka gorutina pošlje sporočilo z delnim rezultatom v kanal
   - glavna gorutina bere sporočila in vrednosti prišteva v globalno spremenljivko `pi`
   - zahteva toliko branj, kolikor dodatnih gorutin smo zagnali
-  - branje iz kanala blokira izvajanje gorutine dokler se v kanalu ne pojavi vrednost, bo glavna gorutina čakala toliko časa, da zaključijo vse dodatne gorutine
+  - ker branje iz kanala blokira izvajanje gorutine dokler se v kanalu ne pojavi vrednost, bo glavna gorutina čakala toliko časa, da zaključijo vse dodatne gorutine
   - ne potrebujemo nobenih drugih sinhronizacijskih elementov
 
 ### Hkratna uporaba več ključavnic in smrtni objem
@@ -162,11 +162,11 @@
   <img src="slike/filozofi.png" width="40%" />
 
   - za okroglo mizo zboruje pet filozofov, ki v več ciklih razmišljajo, so lačni, jejo, potem spet razmišljajo, ...
-  - jedo špagete, iz skupnega krožnika na sredini mize
+  - jedo špagete iz skupnega krožnika na sredini mize
   - na voljo imajo samo 5 vilic
   - vsak filozof pri jedi potrebuje par vilic; uporabi lahko le tiste na svoji levi in svoji desni
 
-    - vilice so omejen vir, ene lahko uporablja samo en filozof na enkrat, zato jih predstavimo s ključavnicami
+    - vilice so omejen vir, ene lahko uporablja samo en filozof naenkrat, zato jih predstavimo s ključavnicami
     - vsak filozof mora dobiti par vilic
 
   - [filozofi-1.go](koda/filozofi-1.go)
@@ -198,7 +198,7 @@
     - delujoča rešitev s kanali
     - vilice vedno pobirajo v enakem vrstnem redu - vedno najprej vzamejo vilice z nižjim indeksom
 
-- do **smrtnega objema** (*angl.* deadlock) pride, če so izpolnjeni vsi Coffmanovi pogoji:
+- do **smrtnega objema** (*angl.* deadlock) lahko pride le, če so izpolnjeni vsi Coffmanovi pogoji:
   - viri (kritični odseki) imajo omejeno število lastnikov (gorutin)
   - lastnik lahko pridobi en vir in čaka na naslednji vir
   - lastnik ima izključno pravico do sproščanja vira
@@ -207,12 +207,12 @@
 - primer smrtnega objema s parom ključavnic
 
   ```go
-  // gorutina 1           // gorutina 2
-  lock1.Lock()           lock2.Lock()
-  lock2.Lock()           lock1.Lock()
-  ...                     ...
-  lock1.Unlock()         lock1.Unlock()
-  lock2.Unlock()         lock2.Unlock()
+  // gorutina 1         // gorutina 2
+  lock1.Lock()          lock2.Lock()
+  lock2.Lock()          lock1.Lock()
+  ...                   ...
+  lock1.Unlock()        lock1.Unlock()
+  lock2.Unlock()        lock2.Unlock()
   ```
 
 - preprečevanje smrtnega objema:
@@ -235,9 +235,9 @@
   - primer: dve osebi se približujeta v ozkem hodniku, da se ne zaletita se obe umakneta na isto stran, potem se obe umakneta na drugo stran, ..., ves čas nekaj počneta, vendar ne znata razrešiti konflikta
   - primer: [zivi-objem.go](koda/zivi-objem.go)
     - poenostavljen primer pogojnega zaklepanja iz primera [filozofi-4.go](koda/filozofi-4.go)
-    - poskrbimo, da obe niti hkrati začneta z zaklepanjem ključavnic
+    - poskrbimo, da obe gorutini hkrati začneta z zaklepanjem ključavnic
 - stradanje
-  - o stradanju govorimo, kadar gorutina ne more takoj dobiti vseh virov, ki jih potrebuje za delo
+  - o stradanju govorimo, kadar gorutina dlje časa ne more dobiti vseh virov, ki jih potrebuje za delo
   - običajno ene gorutine bolj intenzivno zahtevajo vire in ostalim onemogočajo, da bi delo opravile učinkovito
   - primer: [stradanje.go](koda/stradanje.go)
     - dve gorutini z enako količino dela, pohlepna gorutina bo kritični odsek zaklenila enkrat za dlje časa, prijazna gorutina pa večkrat, vsakič za krajši čas

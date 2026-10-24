@@ -1,6 +1,6 @@
 // 5 filozofov
 // s ključavnicami omejimo uporabo vilic
-// pravilno delovanje, samo en filozof na enkrat lahko jemlje vilice
+// pravilno delovanje, samo en filozof naenkrat lahko jemlje vilice
 
 package main
 

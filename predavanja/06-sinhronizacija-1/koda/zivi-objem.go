@@ -41,9 +41,10 @@ func person(signalChan <-chan struct{}, id int) {
 		fmt.Println("Person", id, "took fork", id)
 		time.Sleep(100 * time.Millisecond)
 		if fork[(id+1)%2].TryLock() {
-			fmt.Println("Person", id, "took fork", id%2)
+			fmt.Println("Person", id, "took fork", (id+1)%2)
 			break
 		}
+		time.Sleep(100 * time.Millisecond)
 		fork[id].Unlock()
 		fmt.Println("Person", id, "released fork", id)
 		time.Sleep(100 * time.Millisecond)
@@ -51,7 +52,7 @@ func person(signalChan <-chan struct{}, id int) {
 	fork[id].Unlock()
 	fmt.Println("Person", id, "released fork", id)
 	fork[(id+1)%2].Unlock()
-	fmt.Println("Person", id, "released fork", id%2)
+	fmt.Println("Person", id, "released fork", (id+1)%2)
 }
 
 func main() {

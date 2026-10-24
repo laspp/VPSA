@@ -10,7 +10,7 @@
   - predavanja:
       [uvod](predavanja/01-uvod/uvod.md),
       [arhitekture](predavanja/02-arhitekture/arhitekture.md)
-  - vaje: jih še ni
+  - vaje: -
 
 ### Sistemi s skupnim pomnilnikom
   
@@ -18,9 +18,15 @@
   - predavanja:
     [programska oprema](predavanja/03-programska-oprema/programska-oprema.md),
     [SLURM](predavanja/04-slurm/slurm.md)
-  - vaje: [uporaba gruče Arnes](vaje/01-uporaba-gruce/Uporaba_gruce.md)
+  - vaje: 
+    [uporaba gruče Arnes](vaje/01-uporaba-gruce/Uporaba_gruce.md)
   
 - Teden 03:
   - predavanja:
     [jezik go](predavanja/05-go/go.md) 
-  - vaje: [jezik go](vaje/02-programski-jezik-go/Uvod_v_go.md) 
+  - vaje: 
+    [jezik go](vaje/02-programski-jezik-go/Uvod_v_go.md) 
+
+- Teden 04:
+  - predavanja:
+    [sinhronizacija: ključavnice (tvegano stanje)](predavanja/06-sinhronizacija-1/sinhronizacija-1.md#tvegano-stanje-in-kritični-odsek-ipp44)

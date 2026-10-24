@@ -1,5 +1,5 @@
 // računanje pi po metodi Monte Carlo
-// vzporedno, se izognemo ključavnicam, prenos vrednosti po referenci
+// vzporedno, se izognemo ključavnicam, prenos vrednosti s kazalcem
 
 package main
 
@@ -12,9 +12,10 @@ import (
 )
 
 type experiment struct {
-	shots int
-	hits  int
-	value float64
+	shots int				// 8B na 64-bitni ahitekturi
+	hits  int				// 8B	
+	value float64			// 8B
+//	padding [13] int		// 24 B vs. 128 B
 }
 
 var pi experiment
