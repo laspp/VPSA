@@ -27,6 +27,7 @@ func getLettersFromMessage(message string) <-chan rune {
 			letterStream <- letter
 		}
 	}()
+	message = "bye"
 
 	return letterStream
 }

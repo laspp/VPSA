@@ -240,4 +240,5 @@
   - o stradanju govorimo, kadar gorutina dlje časa ne more dobiti vseh virov, ki jih potrebuje za delo
   - običajno ene gorutine bolj intenzivno zahtevajo vire in ostalim onemogočajo, da bi delo opravile učinkovito
   - primer: [stradanje.go](koda/stradanje.go)
-    - dve gorutini z enako količino dela, pohlepna gorutina bo kritični odsek zaklenila enkrat za dlje časa, prijazna gorutina pa večkrat, vsakič za krajši čas
+    - dve gorutini z enako količino dela
+    - pohlepna gorutina bo v vsakem obhodu zaklenila izvajanje celotne kode, prijazna gorutina pa samo kritični odsek
