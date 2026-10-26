@@ -1,6 +1,7 @@
 // 5 filozofov
 // ni nadzora nad jemanjem vilic
 // nepravilno delovanje
+// srun --reservation=fri --cpus-per-task=5 go run filozofi-1.go
 
 package main
 
