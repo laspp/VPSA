@@ -71,11 +71,11 @@
 
 - operacija je nedeljiva ali atomarna, če je v obsegu delovanja ne moremo razdeliti na manjše dele ali prekiniti
 - obseg delovanja: operacija, ki je atomarna za proces, morda ni atomarna za operacijski sistem; operacija, ki je atomarna za operacijski sistem, lahko ni atomarna za procesor ali dostop procesorja do pomnilnika
-- najprej moramo določiti obseg, v katerem mora biti operacija atomarna
 - atomarna operacija se bo znotraj obsega delovanja izvedla v celoti, brez zunanjih vplivov
-- primer: operacija `shots++` je sestavljena iz treh atomarnih operacij (branje, povečevanje in shranjevanje); za procesor to ni atomarna operacija; atomarna je v sekvenčnem programu, ne pa tudi v sočasnem programu
+- najprej moramo določiti obseg, v katerem mora biti operacija atomarna
+- primer: operacija `shots++` je atomarna v sekvenčnem programu, ne pa v sočasnem programu; sestavljena je iz treh atomarnih operacij procesorja (branje, povečevanje in shranjevanje)
 - če je operacija atomarna v obsegu sočasnega programa, je varna in jo lahko uporabimo pri pisanju logično pravilnih sočasnih programov
-- za optimizacijo programov je pomembno, da prepoznamo odseke kode, ki morajo biti atomarni, in poskrbimo, da je takih odsekov čim manj
+- za optimizacijo sočasnih programov je pomembno, da prepoznamo odseke kode, ki morajo biti atomarni, in poskrbimo, da je takih odsekov čim manj
 
 ### Podpora za delo s ključavnicami v procesorjih
 
