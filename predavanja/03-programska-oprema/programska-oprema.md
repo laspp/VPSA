@@ -43,7 +43,7 @@
 
 ## Niti
 
-- proces je osnovna enota, ki ji operacijski sistem dodeli vire, ni pa osnovna enota, ki jo operacijski sistem lahko izvaja
+- proces je osnovna enota, ki ji operacijski sistem dodeli vire, nit pa osnovna enota, ki jo operacijski sistem lahko izvaja
 - proces lahko vključuje več internih izvajalnih enot ali niti
 - proces ima vedno vsaj glavno nit
 - iz glavne niti lahko po potrebi zaženemo dodatne niti
