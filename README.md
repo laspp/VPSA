@@ -29,10 +29,12 @@
 
 - Teden 04:
   - predavanja:
-    [sinhronizacija: ključavnice (tvegano stanje)](predavanja/06-sinhronizacija-1/sinhronizacija-1.md#tvegano-stanje-in-kritični-odsek-ipp44)
+    [sinhronizacija: ključavnice](predavanja/06-sinhronizacija-1/sinhronizacija-1.md)
   - vaje: [sočasno programiranje v go](vaje/03-gorutine/Socasno_programiranje_go.md)
 
 - Teden 05:
   - predavanja:
-    [sinhronizacija: ključavnice (tvegano stanje)](predavanja/06-sinhronizacija-1/sinhronizacija-1.md#tvegano-stanje-in-kritični-odsek-ipp44)
-  - vaje: [sočasno programiranje v go](vaje/03-gorutine/Socasno_programiranje_go.md) 
+    - predavanja:
+    [sinhronizacija: semaforji in bralno-pisalne ključavnice](predavanja/07-sinhronizacija-2/sinhronizacija-2.md),
+    [sinhronizacija: pogojne spremenljivke](predavanja/08-sinhronizacija-3/sinhronizacija-3.md)
+  - vaje:
