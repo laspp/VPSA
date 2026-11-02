@@ -24,6 +24,7 @@ func writer(id int, cycles int, places int) {
 		for k := 0; k < places; k++ {
 			semBook <- struct{}{}
 		}
+		<-semGatekeeper
 
 		fmt.Println("Writer", id, "start", i)
 		time.Sleep(time.Duration(id) * time.Millisecond)
@@ -32,7 +33,6 @@ func writer(id int, cycles int, places int) {
 		for k := 0; k < places; k++ {
 			<-semBook
 		}
-		<-semGatekeeper
 
 		time.Sleep(time.Duration(id) * time.Millisecond)
 	}
