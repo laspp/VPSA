@@ -43,9 +43,8 @@ func reader(id int) {
 	for {
 		// med tem, ko pisatelj pridobiva mesta v kanalu, morajo bralci čakati
 		semGatekeeper <- struct{}{}
-		<-semGatekeeper
-
 		semBook <- struct{}{}
+		<-semGatekeeper
 
 		fmt.Println("Reader", id, "start")
 		time.Sleep(time.Duration(id) * time.Millisecond)
