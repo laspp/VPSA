@@ -37,3 +37,13 @@
     [sinhronizacija: semaforji in bralno-pisalne ključavnice](predavanja/07-sinhronizacija-2/sinhronizacija-2.md),
     [sinhronizacija: pogojne spremenljivke](predavanja/08-sinhronizacija-3/sinhronizacija-3.md)
   - vaje: [metode in vmesniki](vaje/04-metode-vmesniki/Metode-vmesniki.md)
+
+- Teden 06:
+  - predavanja:
+    [varna sočasnost](predavanja/09-varna-socasnost/varna-socasnost.md)
+
+ ### Sistemi s porazdeljenim pomnilnikom
+
+- Teden 07:
+  - predavanja:
+    [posredovanje sporočil: osnove](predavanja/10-posredovanje-sporocil-1/posredovanje-sporocil-1.md)
