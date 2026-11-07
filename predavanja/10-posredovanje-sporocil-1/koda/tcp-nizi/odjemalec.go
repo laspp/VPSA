@@ -10,15 +10,15 @@ import (
 	"time"
 )
 
-func Client(url string, message string) {
+func Client(addr string, message string) {
 
 	// povežemo se na strežnik
-	connection, err := net.Dial("tcp", url)
+	connection, err := net.Dial("tcp", addr)
 	if err != nil {
 		panic(err)
 	}
 	defer connection.Close()
-	fmt.Println("TCP (string) client connected to", url)
+	fmt.Println("TCP (string) client connected to", addr)
 
 	// pošljemo sporočilo
 	timeNow := time.Now().Format(time.DateTime)

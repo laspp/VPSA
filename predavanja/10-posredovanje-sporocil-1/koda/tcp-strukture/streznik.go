@@ -12,16 +12,16 @@ import (
 	"time"
 )
 
-func Server(url string) {
+func Server(addr string) {
 	// izpišemo ime strežnika
 	hostname, err := os.Hostname()
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("TCP (struct) server listening at %v%v\n", hostname, url)
+	fmt.Printf("TCP (struct) server listening at %v%v\n", hostname, addr)
 
 	// odpremo vtičnico
-	listener, err := net.Listen("tcp", url)
+	listener, err := net.Listen("tcp", addr)
 	if err != nil {
 		panic(err)
 	}
