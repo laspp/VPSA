@@ -45,9 +45,10 @@ func main() {
 	for id := 0; id < *gPtr; id++ {
 		go piCalc(*iPtr / *gPtr, piStream)
 	}
-	// preberemo vse vrednosti iz kanala
+	// preberemo vse vrednosti iz kanala (vrstni red zaključevanja se spreminja)
 	for i := 0; i < *gPtr; i++ {
 		mypi := <-piStream
+		fmt.Println("mypi:", mypi)
 		pi.shots += mypi.shots
 		pi.hits += mypi.hits
 	}
@@ -55,4 +56,6 @@ func main() {
 	timeElapsed := time.Since(timeStart)
 	// izpišemo
 	fmt.Println("pi:", pi, "goroutines:", *gPtr, "time:", timeElapsed)
+	// zapremo kanal
+	close(piStream)	
 }
