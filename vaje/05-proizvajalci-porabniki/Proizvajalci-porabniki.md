@@ -127,5 +127,5 @@ V programu omogočite varno zaustavitev spletne trgovine. Ob pritisku na tipko `
 
 Pri posodabljanju spremenljivk `promet` in `stNarocil` s ključavnicami poskrbite, da ne pride do hkratnega spreminjanja vrednosti s strani več gorutin. Prav tako poskrbite, da se izpisi različnih naročil med sabo ne premešajo.
 
-**Rok za oddajo: 16. 11. 2026**
+**Rok za oddajo: 17. 11. 2026**
 
