@@ -41,6 +41,7 @@
 - Teden 06:
   - predavanja:
     [varna sočasnost](predavanja/09-varna-socasnost/varna-socasnost.md)
+  - vaje: [proizvajalci in porabniki](vaje/05-proizvajalci-porabniki/Proizvajalci-porabniki.md)
 
  ### Sistemi s porazdeljenim pomnilnikom
 
