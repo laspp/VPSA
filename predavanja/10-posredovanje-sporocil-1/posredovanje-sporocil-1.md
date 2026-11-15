@@ -162,7 +162,7 @@ Porazdeljeni sistem je tisti, v katerem okvara računalnika, za katerega sploh n
 
 - s protokolom TCP pridobimo na zanesljivosti prenosov na račun manjše prepustnosti
 - kadar zanesljivosti ne potrebujemo, raje uporabimo protokol UDP (*angl.* user datagram protocol)
-- protokol UDP uporablja vrata, pri njem ne vzpostavljamo povezav
+- protokol UDP uporablja vtičnice, pri njem ne vzpostavljamo povezav
 - gre za precej osnoven protokol, ki omogoča hiter prenos podatkov
   - ne zna sam razdeliti podatkovnega toka na pakete, ampak lahko pošilja samo podatkovne pakete omejene dolžine ali datagrame
   - ne pozna potrjevanja, zato datagrami niso oštevilčeni
