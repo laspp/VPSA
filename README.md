@@ -47,4 +47,5 @@
 
 - Teden 07:
   - predavanja:
-    [posredovanje sporočil: osnove](predavanja/10-posredovanje-sporocil-1/posredovanje-sporocil-1.md)
+    [posredovanje sporočil: osnove](predavanja/10-posredovanje-sporocil-1/posredovanje-sporocil-1.md),
+    [posredovanje sporočil: programski vmesniki](predavanja/11-posredovanje-sporocil-2/posredovanje-sporocil-2.md)
