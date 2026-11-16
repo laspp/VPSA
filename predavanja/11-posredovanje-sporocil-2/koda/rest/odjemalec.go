@@ -105,6 +105,7 @@ func createWithPost(url string, jsonBody []byte) error {
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()		// sprosti povezavo
 	if resp.StatusCode != 200 {
 		err = errors.New("create not successful")
 	}
@@ -117,6 +118,7 @@ func readWithGet(url string, task string) ([]byte, error) {
 	if err != nil {
 		return []byte{}, err
 	}
+	defer resp.Body.Close()
 	resBody, err := io.ReadAll(resp.Body)
 	return resBody, err
 }
@@ -133,6 +135,7 @@ func create(url string, body []byte) error {
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
 		err = errors.New("create not successful")
 	}
@@ -150,6 +153,7 @@ func read(url string, task string) ([]byte, error) {
 	if err != nil {
 		return []byte{}, err
 	}
+	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
 	return body, err
 }
@@ -163,6 +167,10 @@ func update(url string, task string, body []byte) error {
 	}
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
 		err = errors.New("update not successful")
 	}
@@ -176,6 +184,10 @@ func delete(url string, task string) error {
 		return err
 	}
 	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()		// sprosti povezavo
 	if resp.StatusCode != 200 {
 		err = errors.New("delete not successful")
 	}

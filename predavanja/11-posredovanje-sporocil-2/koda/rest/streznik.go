@@ -6,10 +6,10 @@ package main
 import (
 	"api/storage"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
-	"strings"
 )
 
 func Server(url string) {
@@ -20,11 +20,18 @@ func Server(url string) {
 
 	// pripravimo http multiplekser
 	// multiplekser glede na pot v url določi, kateri rokovalnik bo prevzel zahtevo
+	// vzorec ima obliko "METODA /pot"; {task} je spremenljivka v poti,
+	// {$} pomeni, da se pot konča natanko tu
 	mux := http.NewServeMux()
 	// povežemo poti in rokovalnike
-	mux.Handle("/", &HomeHandler{})
-	mux.Handle("/todos", storageHandler)
-	mux.Handle("/todos/", storageHandler)
+	mux.Handle("GET /{$}", &HomeHandler{})
+	mux.HandleFunc("POST /todos", storageHandler.CreateTodo)
+	mux.HandleFunc("POST /todos/{$}", storageHandler.CreateTodo)
+	mux.HandleFunc("GET /todos", storageHandler.GetTodos)
+	mux.HandleFunc("GET /todos/{$}", storageHandler.GetTodos)
+	mux.HandleFunc("GET /todos/{task}", storageHandler.GetTodos)
+	mux.HandleFunc("PUT /todos/{task}", storageHandler.UpdateTodo)
+	mux.HandleFunc("DELETE /todos/{task}", storageHandler.DeleteTodo)
 
 	// preberemo ime vozlišča
 	hostName, err := os.Hostname()
@@ -62,105 +69,74 @@ func NewTodosHandler(tds *storage.TodoStorage) *TodosHandler {
 	}
 }
 
-// strežnik za operacije CRUD
-func (tdh *TodosHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	switch {
-	case r.Method == http.MethodPost:
-		tdh.CreateTodo(w, r)
-		return
-	case r.Method == http.MethodGet:
-		tdh.GetTodos(w, r)
-		return
-	case r.Method == http.MethodPut:
-		tdh.UpdateTodo(w, r)
-		return
-	case r.Method == http.MethodDelete:
-		tdh.DeleteTodo(w, r)
-		return
-	default:
-		w.WriteHeader(http.StatusNotFound)
-		return
+// odgovor s kodo napake: 404, če naloge ni, sicer podana koda
+func writeError(w http.ResponseWriter, err error, code int) {
+	if errors.Is(err, storage.ErrorNotFound) {
+		code = http.StatusNotFound
 	}
+	http.Error(w, err.Error(), code)
 }
 
 // metoda za obdelavo zahtevka za ustvarjanje zapisov
-func (h *TodosHandler) CreateTodo(w http.ResponseWriter, r *http.Request) error {
+func (h *TodosHandler) CreateTodo(w http.ResponseWriter, r *http.Request) {
 	var todo storage.Todo
 	var reply struct{}
 
-	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewDecoder(r.Body).Decode(&todo); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return err
+		writeError(w, err, http.StatusBadRequest)
+		return
 	}
 	if err := h.storage.Create(&todo, &reply); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return err
+		writeError(w, err, http.StatusInternalServerError)
+		return
 	}
 	w.WriteHeader(http.StatusOK)
-	return nil
 }
 
 // metoda za obdelavo zahtevka za branje zapisov
-func (h *TodosHandler) GetTodos(w http.ResponseWriter, r *http.Request) error {
-	var match string
-
-	w.Header().Set("Content-Type", "application/json")
-	if strings.HasSuffix(r.URL.Path, "todos") || strings.HasSuffix(r.URL.Path, "todos/") {
-		match = ""
-	} else {
-		split := strings.Split(r.URL.Path, "/")
-		match = split[len(split)-1]
-	}
-	query := storage.Todo{Task: match, Completed: false}
+// pot /todos vrne vse zapise, pot /todos/{task} samo zapis z imenom task
+func (h *TodosHandler) GetTodos(w http.ResponseWriter, r *http.Request) {
+	query := storage.Todo{Task: r.PathValue("task")}
 	todoList := make(map[string]storage.Todo)
-	err := h.storage.Read(&query, &todoList)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return err
+	if err := h.storage.Read(&query, &todoList); err != nil {
+		writeError(w, err, http.StatusInternalServerError)
+		return
 	}
 	jsonBytes, err := json.Marshal(todoList)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return err
+		writeError(w, err, http.StatusInternalServerError)
+		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(jsonBytes)
-	return nil
 }
 
 // metoda za obdelavo zahtevka za posodobitev zapisa
-func (h *TodosHandler) UpdateTodo(w http.ResponseWriter, r *http.Request) error {
+// ime naloge vzamemo iz poti, zato telo ne more spremeniti drugega zapisa
+func (h *TodosHandler) UpdateTodo(w http.ResponseWriter, r *http.Request) {
 	var todo storage.Todo
 	var reply struct{}
 
-	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewDecoder(r.Body).Decode(&todo); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return err
+		writeError(w, err, http.StatusBadRequest)
+		return
 	}
+	todo.Task = r.PathValue("task")
 	if err := h.storage.Update(&todo, &reply); err != nil {
-		if err == storage.ErrorNotFound {
-			w.WriteHeader(http.StatusNotFound)
-			return err
-		}
-		w.WriteHeader(http.StatusInternalServerError)
-		return err
+		writeError(w, err, http.StatusInternalServerError)
+		return
 	}
 	w.WriteHeader(http.StatusOK)
-	return nil
 }
 
 // metoda za obdelavo zahtevka za brisanje zapisa
 func (h *TodosHandler) DeleteTodo(w http.ResponseWriter, r *http.Request) {
 	var reply struct{}
 
-	w.Header().Set("Content-Type", "application/json")
-	split := strings.Split(r.URL.Path, "/")
-	match := split[len(split)-1]
-	query := storage.Todo{Task: match, Completed: false}
+	query := storage.Todo{Task: r.PathValue("task")}
 	if err := h.storage.Delete(&query, &reply); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		writeError(w, err, http.StatusInternalServerError)
 		return
 	}
 	w.WriteHeader(http.StatusOK)

@@ -62,11 +62,11 @@
   - sinhrona: odjemalec blokira, dokler strežnik ne odgovori; zaradi čakanja na odgovor je neučinkovita
   - asinhrona: odjemalec nadaljuje z izvajanjem kode; ko prispe odgovor, se izvede povratni klic (*angl.* callback); v jeziku go to dosežemo z gorutinami, mnogi drugi jeziki (javascript, C#) poznajo ključne besede kot sta async/await
 - želimo si, da so metode idempotentne
-  - metoda je idempotentna, če se v shrambi nič ne spremeni, ko jo izvedemo dvakrat zapored
+  - metoda je idempotentna, če ima večkratna izvedba z enakimi argumenti enak učinek kot enkratna (ponovna izvedba v shrambi ničesar več ne spremeni)
   - do dveh zaporednih izvajanj lahko pride zaradi težav z dosegljivostjo strežnika (ob izpadu omrežja ali samega strežnika odjemalec ponovi zahtevo)
-- danes pogosto uporabljane tehnologije za komunikacijo med procesi
+- trije primeri tehnologij za komunikacijo med procesi
   - RESTful: najbolj uporabljana tehnologija za javne strežnike, podpirajo jo vsi brskalniki preko kode javascript, HTTP/1.1
-  - RPC (*angl.* remote procedure call): za interno komunikacijo med procesi, napisanimi v istem programskem jeziku
+  - go RPC (*angl.* go remote procedure call): za interno komunikacijo med procesi, napisanimi v programskem jeziku go
   - gRPC: postaja nov standard, uporablja HTTP/2, zaradi binarnega zapisovanja (Protocol Buffers) je hitrejši od HTTP/1.1
 
 ### Vzorec RPC
@@ -84,14 +84,14 @@
   - za razliko od metod, ki se dejansko izvajajo na odjemalcu, pride pri izvajanju na strežniku lahko do napak: pri prenosu argumentov, med izvajanjem, pri prenosu rezultatov
     - kje se je zataknilo, kako se odzvati (ponoven prenos, koliko časa čakati, ...)
 - zgodovinski razvoj
-  - SunRPC, osnova za porazdeljene podatkovne sisteme, 1980
-  - CORBA (*angl.* common object request broker architecture), 1990
+  - SunRPC, osnova za porazdeljeni datotečni sistem, 1984
+  - CORBA (*angl.* common object request broker architecture), 1991
   - Microsoft DCOM (*angl.* distributed component object model), 1996
   - Java RMI (*angl.* remote method invocation), 1997
   - SOAP (*angl.* simple object access protocol), običajno v navezi z XML (*angl.* extensible markup language), 1998
   - AJAX (*angl.* asynchronous javascript and XML), 1999
   - REST (*angl.* representational state transfer), v navezi z JSON (*angl.* javascript object notation), 2000
-  - Google gRPC (*.angl.* gRPC remote procedure call), 2015
+  - gRPC (*angl.* gRPC remote procedure call), 2015
 
 ### RESTful
 
@@ -109,7 +109,7 @@
   - zahteve je treba pošiljati zaporedno (zaporeden prenos slik na spletni strani)
   - izboljšave s HTTP/2 (binarni protokol, multipleksiranje povezav), HTTP/3 lasten protokol nad UDP
 - zahteva in odgovor
-  - lokacijo vira podamo z URL (*angl.* uniform resource locator), na primer `http://localhost:9876/todos?task=predavanja`; vir je naveden za znakom `/`, neobvezen filter pa za znakom `?`
+  - lokacijo vira podamo z URL (*angl.* uniform resource locator), na primer `http://localhost:9876/todos/predavanja`; pot (`/todos/predavanja`) določa vir, neobvezen filter pa lahko dodamo za znakom `?`
   - odjemalec v glavi zahteve med drugim poda želeni format, na primer `application/json`
   - strežnik odgovori s sporočilom
     - v glavi so osnovne informacije: format zapisa, koda odgovora (100-199: informativno, 200-299: uspešno, 300-399: preusmeritev, 400-499: napaka odjemalca, 500-599: napaka strežnika)
@@ -120,23 +120,26 @@
   - tudi POST je lahko idempotenten – transakcija na strežniku: preverjanje obstoja ključa in vpisovanje
 - [primer RESTful](koda/rest/rest.go) ([strežnik](koda/rest/streznik.go) in [odjemalec](koda/rest/odjemalec.go))
   - strežnik
-    - pripravimo shrambo
-    - ustvarimo multiplekser za izbiranje rokovalnika, ki bo izvedel zahtevo za izbrani vir
-      - dve opciji: prikaz osnovne spletne strani (`/`) ali klic metode (`/todos`, `/todos/`)
-      - rokovalnik mora vključevati metodo `ServeHTTP` z dvema argumentoma: prvi predstavlja odgovor, drugi pa zahtevo
+    - pripravimo shrambo in rokovalnik, ki ima za vsako operacijo CRUD svojo metodo
+    - ustvarimo multiplekser (*angl.* multiplexer), ki glede na metodo in pot zahteve izbere rokovalnik, ki bo zahtevo obdelal
+      - vzorec ima obliko `"METODA /pot"`, na primer `"PUT /todos/{task}"`
+      - `{task}` je spremenljivka v poti; njeno vrednost v rokovalniku preberemo z `r.PathValue("task")`
+      - `{$}` pomeni, da se pot konča natanko na tem mestu, zato `GET /{$}` prikaže osnovno spletno stran (`/`), `/todos` in `/todos/` pa obravnavamo posebej
+      - zahteve z neznano potjo multiplekser zavrne s kodo 404, zahteve z drugo metodo pa s kodo 405
+      - rokovalnik je funkcija z dvema argumentoma: prvi (`w`) predstavlja odgovor, drugi (`r`) pa zahtevo
 
         ```go
-        func (tdh *TodosHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
+        func (tdh *TodosHandler) CreateTodo(w http.ResponseWriter, r *http.Request)
         ```
 
-      - glede na tip zahteve se izvede ustrezna operacija na shrambi
-      - ob zaključeni operaciji strežnik vrne ustrezno pripravljen odgovor
+      - rokovalnik povežemo s potjo z `mux.HandleFunc("POST /todos", storageHandler.CreateTodo)`
+      - rokovalnik izvede ustrezno operacijo na shrambi in nastavi kodo odgovora (200, 400, 404, ...)
     - zaženemo strežnik
   - odjemalec `curl`
-    - za primere glej komentar na vrhu datoteke [streznik.go](koda/rest/streznik/streznik.go)
+    - za primere glej komentar na vrhu datoteke [rest.go](koda/rest/rest.go)
   - odjemalec v jeziku go:
     - zahteve ustvarjamo s funkcijami iz paketa `net/http`: `Post`, `Get`, `NewRequest/Do`
-    - pri vsaki zahtevi pravilno nastavimo naslov storitve (URL)
+    - pri vsaki zahtevi pravilno nastavimo naslov vira (URL), na primer `.../todos/predavanja`
 
 ### go rpc
 
@@ -157,10 +160,10 @@
 
   - podatkovni tip T1 predstavlja argument, ki ga posreduje odjemalec; T2 predstavlja odgovore, ki jih strežnik posreduje odjemalcu
   - vrnjena vrednost (`error`) se posreduje nazaj kot niz z opisom napake, ki se prevede v tip `error`
-  - strukture T, T1 in T2 so serializirane s paketom `encoding/gob`
+  - ime metode in strukture (argumenti) T1 in T2 so serializirane s paketom `encoding/gob`
 - [primer RPC](koda/rpc/rpc.go) ([strežnik](koda/rpc/streznik.go) in [odjemalec](koda/rpc/odjemalec.go))
   - izmenjava poteka po protokolu TCP ali HTTP
-    - s protokolom HTTP dobimo podporo za overovitev: začetna izmenjava poteka po protokolu HTTP, naprej sledijo enaki paketi kot pri TCP
+    - s protokolom HTTP lahko RPC deli vrata z drugimi storitvami HTTP; začetna izmenjava poteka po protokolu HTTP, naprej sledijo enaki paketi kot pri TCP
   - strežnik
     - prijavi metode za RPC
     - vzpostavi vtičnico (`listener`), na kateri čaka na povezavo
@@ -177,17 +180,17 @@
 - Google ga je zasnoval za učinkovit prenos podatkov med mikrostoritvami
 - moderni pristopi uporabljajo jezike za opis vmesnika (*angl.* interface definition language, IDL)
 - za kodiranje podatkov uporablja binarni protokol [Protocol Buffers](https://protobuf.dev/)
-- za prenos podatkov uporablja protokol HTTP/2, možnost overovitve pošiljatelja
+- za prenos podatkov uporablja protokol HTTP/2, ki podpira šifriranje (TLS) in overovitev pošiljatelja
 - omogoča dvosmerni tok podatkov, majhna latenca, velika pasovna širina
 - primeren za kompleksne programske vmesnike
-- za razliko od RPC, ki je omejen samo na jezik go, lahko gRPC uporabljamo v množici podprtih programskih jezikov
+- za razliko od go RPC, ki je omejen samo na jezik go, lahko gRPC uporabljamo v množici podprtih programskih jezikov
 
   <img src="slike/grpc.png" width="60%" />
 
 #### Protocol Buffers
 
 - gRPC privzeto uporablja protokol [Protocol Buffers](https://protobuf.dev/overview) za kodiranje (*angl.* marshalling) strukturiranih podatkov
-  - nesrečno poimenovanje: Buffers v imenu so bili ključni v času, ko še ni bilo jezika za opis vmesnika in je programer vmesnik zgradil v medpomnilniku med izvajanjem programa
+  - nesrečno poimenovanje: Buffers v imenu so bili ključni v času, ko še ni bilo jezika za opis vmesnika in je programer sporočilo sestavljal v medpomnilniku med izvajanjem programa
   - pripravimo opisno datoteko, ki vključuje strukture in metode
   - prevajalnik `protoc` nam iz opisne datoteke pripravi paket, s katerim elegantno izvajamo klice metod na strežniku
     - podrobnosti o namestitvi paketa najdete v komentarju k datoteki [protobufStorage.proto](koda/grpc/protobufStorage/protobufStorage.proto)
@@ -203,10 +206,10 @@
   - če prevajalnik `protoc` zaženemo s stikali
 
     ```bash
-    srun protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out= --go-grpc_opt=paths=source_relative protobufStorage.proto
+    protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative protobufStorage.proto
     ```
 
-    nam kar v isti mapi pripravi paket za go, v našem primeru `main/grpc/protobufStorage`, ki vključuje dve datoteki [protobufStorage.pb.go](koda/grpc/protobufStorage/protobufStorage.pb.go) in [protobufStorage_grpc.pb.go](koda/grpc/protobufStorage/protobufStorage_grpc.pb.go)
+    nam kar v isti mapi pripravi paket za go, v našem primeru `api/grpc/protobufStorage`, ki vključuje dve datoteki [protobufStorage.pb.go](koda/grpc/protobufStorage/protobufStorage.pb.go) in [protobufStorage_grpc.pb.go](koda/grpc/protobufStorage/protobufStorage_grpc.pb.go)
   - paket, ki ga tvorita ti dve datoteki, uporabimo pri pisanju strežnika in odjemalca
 
 #### Strežnik in odjemalec
@@ -216,7 +219,7 @@
     - pripravimo strukturo in metode, pri tem izhajamo iz predloge (`protobufStorage.UnimplementedCRUDServer`)
     - v strukturo dodamo potrebne elemente
     - pripravimo kodo za vse metode, ki jih strežnik podpira
-      - vsaka metoda vključuje izvajalno okolje (*angl.* context), vhodne argumente in vrnjene vrednosti (kazalec na strukturo in napako)
+      - vsaka metoda vključuje kontekst (*angl.* context), vhodne argumente in vrnjene vrednosti (kazalec na strukturo in napako)
       - primer
 
         ```go
@@ -225,11 +228,11 @@
         }
         ```
 
-    - izvajalno okolje skrbi za nadzorovano izvajanje gorutin (gorutine si lahko izmenjujejo informacije o globalnem stanju aplikacije, na primer, lahko jih prekličemo zaradi časovne omejitve)
+    - kontekst nosi časovno omejitev, signal za preklic in vrednosti, vezane na posamezno zahtevo; gRPC rok odjemalca prenese tudi na strežnik
     - na strežniku prijavimo metode gRPC in zaženemo strežnik gRPC
   - odjemalec
-    - se povežemo na strežnik s potrebnimi pravicami
-    - vzpostavimo izvajalno okolje
+    - pripravimo povezavo brez šifriranja; vzpostavi se ob prvem klicu
+    - vzpostavimo kontekst
 
       ```go
       contextCRUD, cancel := context.WithTimeout(context.Background(), time.Second)

@@ -2,7 +2,7 @@
 //
 // 		strežnik ustvari in vzdržuje shrambo nalog TodoStorage
 //		odjemalec nad shrambo izvaja operacije CRUD
-//		dve verziji: HTTP in TCP, z verzijo HTTP lahko poskrbimo tudi za avtorizacijo odjemalca na strežniku
+//		dve verziji: HTTP in TCP, z verzijo HTTP lahko RPC sobiva na istih vratih z drugimi storitvami HTTP
 //
 // zaženemo strežnik
 // 		go run *.go -c [tip povezave http ali tcp]
