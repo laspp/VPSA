@@ -11,7 +11,7 @@ import "fmt"
 
 const N int = 5
 
-var ch chan bool = make(chan bool)
+var ch chan struct{} = make(chan struct{})
 
 func worker(id int) {
 	fmt.Println(id)
@@ -117,5 +117,63 @@ func main() {
 	}
 	wg.Wait()
 	fmt.Println(c.n)
+}
+```
+
+## Naloga 5
+
+Števni semafor smo namesto s kanalom implementirali s ključavnico in pogojno spremenljivko. Program zažene `N` gorutin, hkrati pa sme delati največ `K` gorutin. Program izpiše nekaj vrstic, nato pa se obesi. Pojasnite, zakaj se to zgodi, in program popravite. V metodi `Acquire` je še ena napaka, ki se pokaže le pri določenem prepletanju gorutin. Poiščite jo, opišite zaporedje dogodkov, ki privede do napačnega delovanja semaforja, in jo odpravite.
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+const N int = 10 // število gorutin
+const K int = 3  // največje število hkrati delujočih gorutin
+
+type Semaphore struct {
+	lock  sync.Mutex
+	cond  *sync.Cond
+	value int
+}
+
+func NewSemaphore(value int) *Semaphore {
+	s := &Semaphore{value: value}
+	s.cond = sync.NewCond(&s.lock)
+	return s
+}
+
+func (s *Semaphore) Acquire() {
+	s.lock.Lock()
+	if s.value == 0 {
+		s.cond.Wait()
+	}
+	s.value--
+	s.lock.Unlock()
+}
+
+func (s *Semaphore) Release() {
+	s.lock.Lock()
+	s.value++
+	s.lock.Unlock()
+}
+
+func main() {
+	sem := NewSemaphore(K)
+	var wg sync.WaitGroup
+	for i := range N {
+		wg.Go(func() {
+			sem.Acquire()
+			fmt.Println("gorutina", i, "dela")
+			time.Sleep(100 * time.Millisecond)
+			sem.Release()
+		})
+	}
+	wg.Wait()
 }
 ```
